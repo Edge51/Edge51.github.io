@@ -9,3 +9,11 @@ tags:
 ---
 
 This post will show up by default. To disable scheduling of future posts, edit `config.yml` and set `future: false`. 
+
+
+# TODO list
+
+- 做一道题
+- 写100行代码
+- 看书
+- 看项目
