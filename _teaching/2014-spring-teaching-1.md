@@ -1,73 +1,66 @@
 ---
-title: "后端本地开发环境搭建"
-collection: BackEnd
-type: "Environment Installation"
-permalink: /teaching/2014-spring-teaching-1
-date: 2024-09-02
+title: 'C++ Concurrency in Action'
+date: 2024-09-10
+permalink: /software-development/reading/cpp-concurrency-in-action
+tags:
+  - C++
+  - Concurrency
 ---
 
-Golang Installation
-======
 
-MySQL
-======
-安装mysql之后，默认没有账号，需要通过root权限进入，并创建用户并授权
-```mysql
-CREATE USER 'sammy' IDENTIFIED WITH mysql_native_password BY 'password';
-bind-ip
-```
-[参考博客](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04#step-3-%E2%80%94-creating-a-dedicated-mysql-user-and-granting-privileges)
+# Reading Note of *C++ Concurrency in Action*
+
+## Introduction
+### thread-safe vs. re-entrant
+they are independent concepts.
+- re-entrant means that whenever the code is run, the code will the 
+
+## Thread Management
+### Managing threads
+- init thread with fuction
+- join
+- detach
+### Exception
+- RAII
+### Thread Arguments
+- pass arguments like function
+Always remember to check the argument passing, as the thread will copy the value to initialize the variable even you pass by reference and pointer.
+Using the std::ref when you need to pass by reference.
 
 
-Redis
-======
+### Transfering ownership of thread
+- std::move move only class
+### Choosing number of threads at runtime
+- std::thread::hardware_concurrency()
+### Identifying thread
+- thread.id
 
-Kafka
-======
-
-RabbitMQ
-======
-
-kubernetes
-======
-
-JetBrains Installations
-======
-
-### install.sh
-
-``` mermaid
-
-```
-
-Firefox Settings
-======
-
-### hide top tab bar
-about:config
-toolkit.legacyUserProfileCustomizations.stylesheets true
-
-about:support
-under the Application Basics section, there will be a section called Profile Folder with a button to Open Directory.
-
-In the Profile Directory create a new folder called chrome. In the chrome folder create or edit the file userChrome.css if it already exists.
-
-```css
-/* hides the title bar */
-#titlebar {
-  visibility: collapse;
-}
-
-/* hides the sidebar */
-#sidebar-header {
-  visibility: collapse !important;
-} 
-
-/* leaves space for the window buttons */
-#nav-bar {
-    margin-top: -8px;
-    margin-right: 74px;
-    margin-bottom: -4px;
-}
-
-```
+## Sharing Data between Threads
+![mind map](./C++_Concurrency_in_Action.drawio.svg)
+### Race condition
+- definition: multiple threads access same data, the order they access lead to undefined behaviour.
+### Using mutex to avoid Race condition
+- RAII
+- dead lock
+- exception safe
+### mutex ownership transfer
+- mutex is move only class
+### 
+## Waiting in Threads
+### wait for event with condition variable
+### wait for one off event
+#### std::future
+#### std::async
+#### std::package_task
+#### std::promise
+### wait for particular time period
+### continuation for the *then* semantic
+std::experimental::future facilitate the *then* semantic with the std::experimental::future::then member function.
+if you want to pass arguments to the then function, you need to capture the arguments with lambda function.
+after the then function is called, the future becomes invalid. It't an one off future.
+### chaining of continuations
+the then return a std::experimental::future object, and therefore it can be chained into a sequential call.
+beware of the std::experimental::future returns a std::experimental::future and std::experimental::shared_future returns std::experimental::shared_future
+and remember the exception delivering rules in future.
+### waiting multiple threads
+## Memory Model in C++
