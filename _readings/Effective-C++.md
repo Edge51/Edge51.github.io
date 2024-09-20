@@ -5,6 +5,7 @@ permalink: /software-development/reading/effective-cpp
 date: 2024-09-14
 ---
 
+# Reading notes of *Effective C++*
 
 ### Use const whenever possible
 syntax
