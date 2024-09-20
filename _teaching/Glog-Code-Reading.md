@@ -1,10 +1,11 @@
 ---
-title: 'C++ Concurrency in Action'
+title: 'Glog project Reading'
 date: 2024-09-10
 permalink: /software-development/reading/cpp-concurrency-in-action
 tags:
   - C++
-  - Concurrency
+  - Glog
+  - Code Read
 ---
 
 # Reading notes of Glog project
