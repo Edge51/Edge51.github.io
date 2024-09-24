@@ -10,6 +10,8 @@ tags:
 
 # Reading Note of *C++ Concurrency in Action*
 
+![mind map](/images/readings/c++_concurrency_in_action/C++_Concurrency_in_Action.drawio.svg)
+
 ## Introduction
 ### thread-safe vs. re-entrant
 they are independent concepts.
@@ -36,7 +38,6 @@ Using the std::ref when you need to pass by reference.
 - thread.id
 
 ## Sharing Data between Threads
-![mind map](./C++_Concurrency_in_Action.drawio.svg)
 ### Race condition
 - definition: multiple threads access same data, the order they access lead to undefined behaviour.
 ### Using mutex to avoid Race condition
