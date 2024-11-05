@@ -65,3 +65,37 @@ beware of the std::experimental::future returns a std::experimental::future and 
 and remember the exception delivering rules in future.
 ### waiting multiple threads
 ## Memory Model in C++
+### atomic types:
+- is_lock_free()
+
+### std::atomic_flag
+atomic types are not guaranteed to be lock free, as different device may support different atomic instructions.
+
+std::atomic_flag is always guaranteed to be lock free.
+
+operations
+- initialze (atomic flag is always guaranteed to be initilized to ATOMIC_FLAG_INIT)
+- destroy(destructor)
+- clear()
+- test_and_set()
+- query previous value
+
+A single operation on two distinct objects can’t be atomic.
+- copy constructor
+- copy assignment constructor
+
+### std::atomic<T*>
+
+``` C++
+int array[4] = { 0, 1, 2, 3};
+    std::atomic<int *> intPtr{ array };
+    GTEST_LOG_(INFO) << "intPtr.fetch_add(2):" << *intPtr.fetch_add(2);
+    GTEST_LOG_(INFO) << "intPtr++:" << *(intPtr++);
+    GTEST_LOG_(INFO) << "intPtr:" << *intPtr;
+
+    intPtr.fetch_add(2):0
+
+[  INFO ] intPtr.fetch_add(2):0
+[  INFO ] intPtr++:2
+[  INFO ] intPtr:3
+```
