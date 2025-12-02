@@ -1,11 +1,10 @@
 ---
-title: "C++ Execute Bash Script and Retreive Exit Code"
-collection: Learning
-type: "Programming"
+title: 'C++ Execute Bash Script and Retreive Exit Code'
+date: 2023-10-24
 permalink: /blogs/cpp-execute-script-retreive-exit-code
-date: 2024-10-24
+tags:
+  - Programming
 ---
-
 
 ```cpp
 void CaptureException()
