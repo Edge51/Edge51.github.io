@@ -1,6 +1,6 @@
 ---
 title: 'Rust Study'
-date: 2025-12-09
+date: 2026-01-07
 permalink: /blogs/rust-learning
 tags:
   - rust
