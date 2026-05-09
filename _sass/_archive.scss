@@ -105,6 +105,23 @@
   .page__meta {
     margin: 0 0 4px;
   }
+
+  /* Card style */
+  .archive__item {
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    padding: 1.5em 1.5em 1.2em;
+    margin-bottom: 1.2em;
+    transition: $global-transition;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    &:hover {
+      border-color: mix(#fff, $primary-color, 75%);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      transform: translateY(-3px);
+    }
+  }
 }
 
 
