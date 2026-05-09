@@ -15,11 +15,9 @@
   }
 
   a {
-    text-decoration: underline;
+    text-decoration: none;
 
     &:hover {
-      text-decoration: underline;
-
       img {
         box-shadow: 0 0 10px rgba(#000, 0.25);
       }
@@ -27,66 +25,60 @@
   }
 }
 
+
+/*
+   Year subtitle
+   ========================================================================== */
+
 .archive__subtitle {
-  margin: 1.414em 0 0;
-  padding-bottom: 0.5em;
-  font-size: $type-size-5;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 2em 0 1em;
+  padding: 0;
+  font-size: $type-size-4;
+  font-weight: 700;
+  color: $text-color;
+  border-bottom: none;
+  letter-spacing: -0.02em;
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, $border-color 0%, transparent 100%);
+  }
+}
+
+.archive__subtitle-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.8em;
+  height: 1.8em;
+  padding: 0 0.5em;
+  font-size: 0.65em;
+  font-weight: 600;
   color: mix(#fff, $gray, 25%);
-  border-bottom: 1px solid $border-color;
-
-  + .list__item .archive__item-title {
-    margin-top: 0.5em;
-  }
-}
-
-.archive__item-title {
-  margin-bottom: 0.25em;
-  font-family: $sans-serif-narrow;
-
-  a + a {
-    opacity: 0.5;
-  }
-}
-
-/* remove border*/
-.page__content {
-
-  .archive__item-title {
-    margin-top: 1em;
-    border-bottom: none;
-  }
-}
-
-.archive__item-excerpt {
-  margin-top: 0;
-  font-size: $type-size-6;
-
-  & + p {
-    text-indent: 0;
-  }
-}
-
-.archive__item-teaser {
-  border-radius: $border-radius;
-  overflow: hidden;
-  img {
-    width: 100%;
-  }
-}
-
-.archive__item:hover {
-  .archive__item-teaser {
-    box-shadow: 0 0 10px rgba(#000, 0.25);
-  }
-
-  .archive__item-title {
-    text-decoration: underline;
-  }
+  background: $lighter-gray;
+  border-radius: 999px;
+  line-height: 1;
 }
 
 
 /*
-   List view
+   Year group container
+   ========================================================================== */
+
+.archive__year-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+
+/*
+   Card item (list view)
    ========================================================================== */
 
 .list__item {
@@ -102,25 +94,176 @@
     padding-right: $right-sidebar-width-wide;
   }
 
-  .page__meta {
-    margin: 0 0 4px;
-  }
+  break-inside: avoid;
 
-  /* Card style */
   .archive__item {
+    position: relative;
     background: #fff;
     border: 1px solid $border-color;
-    border-radius: 12px;
-    padding: 1.5em 1.5em 1.2em;
-    margin-bottom: 1.2em;
-    transition: $global-transition;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-radius: 14px;
+    padding: 1.5em 1.5em 1.3em;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+
+    /* Accent left border */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 1.2em;
+      left: -1px;
+      width: 4px;
+      height: calc(100% - 2.4em);
+      background: $primary-color;
+      border-radius: 0 3px 3px 0;
+      opacity: 0.25;
+      transition: opacity 0.25s ease;
+    }
 
     &:hover {
-      border-color: mix(#fff, $primary-color, 75%);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      transform: translateY(-3px);
+      border-color: mix(#fff, $primary-color, 70%);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.05);
+      transform: translateY(-2px);
+
+      &::before {
+        opacity: 1;
+      }
     }
+  }
+}
+
+
+/*
+   Card header: date + tags
+   ========================================================================== */
+
+.archive__item-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6em;
+  margin-bottom: 0.6em;
+}
+
+.archive__item-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1em;
+  font-size: $type-size-7;
+  color: mix(#fff, $gray, 40%);
+}
+
+.archive__item-date,
+.archive__item-readtime {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  white-space: nowrap;
+
+  i {
+    font-size: 0.9em;
+  }
+}
+
+.archive__item-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+}
+
+.archive__item-tag {
+  display: inline-block;
+  padding: 0.15em 0.6em;
+  font-size: $type-size-7;
+  font-weight: 500;
+  line-height: 1.6;
+  color: mix(#fff, $primary-color, 20%);
+  background: mix(#fff, $primary-color, 92%);
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #fff;
+    background: $primary-color;
+  }
+}
+
+
+/*
+   Card title
+   ========================================================================== */
+
+.archive__item-title {
+  margin: 0 0 0.4em;
+  font-family: $sans-serif-narrow;
+  font-size: $type-size-4;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+
+  a {
+    color: $text-color;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size 0.3s ease, color 0.2s ease;
+
+    &:hover {
+      color: $primary-color;
+      background-size: 100% 2px;
+    }
+  }
+
+  a + a {
+    opacity: 0.5;
+  }
+}
+
+/* remove border*/
+.page__content {
+  .archive__item-title {
+    margin-top: 1em;
+    border-bottom: none;
+  }
+}
+
+
+/*
+   Card excerpt
+   ========================================================================== */
+
+.archive__item-excerpt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-size: $type-size-6;
+  line-height: 1.6;
+  color: mix(#fff, $gray, 30%);
+
+  & + p {
+    text-indent: 0;
+  }
+}
+
+
+/*
+   Card teaser image
+   ========================================================================== */
+
+.archive__item-teaser {
+  border-radius: $border-radius;
+  overflow: hidden;
+  img {
+    width: 100%;
+  }
+}
+
+.archive__item:hover {
+  .archive__item-teaser {
+    box-shadow: 0 0 10px rgba(#000, 0.25);
   }
 }
 
