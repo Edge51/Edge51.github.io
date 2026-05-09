@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Black outer ring (fills to edge) -->
+  <circle cx="50" cy="50" r="50" fill="#000"/>
+  <!-- Red inner circle -->
+  <circle cx="50" cy="50" r="44" fill="#E60000"/>
+  <!-- Uzumaki spiral -->
+  <path d="M50 50
+           C47 50 45 52 45 56
+           C45 62 52 67 59 67
+           C68 67 74 59 74 50
+           C74 39 64 30 53 30
+           C40 30 28 40 28 53
+           C28 68 42 80 58 80
+           C76 80 86 66 86 49
+           C86 30 70 16 51 16
+           C30 16 14 32 14 53"
+        fill="none"
+        stroke="#000"
+        stroke-width="6.5"
+        stroke-linecap="round"/>
+  <!-- Center dot -->
+  <circle cx="50" cy="50" r="3" fill="#000"/>
+</svg>
