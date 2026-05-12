@@ -1,0 +1,15 @@
+{
+  "tdx_data_path": "C:/TdxW/data",
+  "compass_api": {
+    "enabled": true,
+    "api_url": "https://api.compass.com/v1",
+    "api_key": ""
+  },
+  "eastmoney_api": {
+    "enabled": true
+  },
+  "output_format": "markdown",
+  "auto_backup": true,
+  "backup_path": "data/backups",
+  "log_level": "INFO"
+}

@@ -2,3 +2,7 @@ _site/
 .bundle/
 .obsidian/
 _drafts/
+
+# Python
+**/__pycache__/
+*.pyc
