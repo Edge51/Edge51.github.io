@@ -8,6 +8,7 @@ import os
 import json
 import requests
 from typing import Optional, Dict, List
+from .tdx_reader import TdxDataReader, get_market_status as get_market_stage
 from datetime import datetime, date
 from abc import ABC, abstractmethod
 
@@ -369,63 +370,30 @@ class SinaFinanceProvider(BaseDataProvider):
 class MarketDataAggregator:
     """
     市场数据聚合器
-    整合多个数据源获取完整的市场信息
+    数据源优先级:
+      Tier 1: 通达信本地数据（上证指数）
+      Tier 2: 指南针/模拟（活跃市值等）
     """
 
     def __init__(self, config: Optional[Dict] = None):
         self.config = config or {}
         self.compass = CompassDataProvider(config=self.config.get('compass', {}))
-        self.eastmoney = EastMoneyProvider()
-        self.sina = SinaFinanceProvider()
-
-    def _is_eastmoney_real_data(self, eastmoney_data: Dict) -> bool:
-        """检测东方财富是否返回真实数据（vs 模拟/错误数据）"""
-        try:
-            diff = eastmoney_data.get("data", {}).get("diff", None)
-            return diff is not None and len(diff) > 0
-        except (TypeError, AttributeError):
-            return False
-
-    def _eastmoney_extract_index(self, eastmoney_data: Dict) -> Optional[float]:
-        """从东方财富响应中提取上证指数"""
-        try:
-            diff = eastmoney_data.get("data", {}).get("diff", [])
-            for item in diff:
-                code = item.get("f12", "")
-                if code == "000001":
-                    return item.get("f2")
-        except (TypeError, AttributeError):
-            pass
-        return None
-
-    def _sina_extract_index(self, sina_data: Dict) -> Optional[Dict]:
-        """从新浪财经响应中提取指数数据"""
-        try:
-            quotes = sina_data.get("data", [])
-            for q in quotes:
-                if q.get("code") == "sh000001":
-                    close = q.get("close", 0)
-                    prev_close = q.get("prev_close", 0)
-                    change_pct = ((close - prev_close) / prev_close * 100) if prev_close else 0
-                    return {
-                        "shanghai_index": close,
-                        "shanghai_change_pct": round(change_pct, 2),
-                    }
-        except (TypeError, AttributeError):
-            pass
-        return None
+        tdx_path = self.config.get('tdx', {}).get('data_path', '')
+        self.tdx = TdxDataReader(data_path=tdx_path) if tdx_path else TdxDataReader()
 
     def get_daily_summary(self, date: Optional[str] = None) -> Dict:
         date_str = date or datetime.now().strftime('%Y-%m-%d')
-
-        eastmoney_data = self.eastmoney.get_market_overview()
         compass_data = self.compass.fetch("market_summary", date=date_str)
 
         summary = {
             "date": date_str,
             "shanghai_index": 0,
             "shanghai_change_pct": 0,
+            "shanghai_open": 0,
+            "shanghai_high": 0,
+            "shanghai_low": 0,
             "volume": 0,
+            "amount": 0,
             "active_market_value_change": 0,
             "limit_up_count": 0,
             "limit_down_count": 0,
@@ -433,45 +401,38 @@ class MarketDataAggregator:
             "market_stage": "未知",
         }
 
-        sh_index = None
+        # Tier 1: 通达信本地数据 (000001 = 上证指数)
+        tdx_index = self.tdx.get_market_index("000001", "sh")
+        if tdx_index and "error" not in tdx_index:
+            summary["shanghai_index"] = tdx_index.get("close", 0)
+            summary["shanghai_change_pct"] = tdx_index.get("change_pct", 0)
+            summary["shanghai_open"] = tdx_index.get("open", 0)
+            summary["shanghai_high"] = tdx_index.get("high", 0)
+            summary["shanghai_low"] = tdx_index.get("low", 0)
+            summary["volume"] = tdx_index.get("volume", 0)
+            summary["amount"] = tdx_index.get("amount", 0)
+            summary["date"] = tdx_index.get("date", date_str)
+            summary["market_stage"] = get_market_stage(tdx_index.get("change_pct", 0))
 
-        # Tier 1: 东方财富实时数据（最优，含历史数据）
-        if self._is_eastmoney_real_data(eastmoney_data):
-            sh_index = self._eastmoney_extract_index(eastmoney_data)
-
-        # Tier 2: 新浪财经实时数据（仅当日数据有效）
-        if sh_index is None:
-            sina_data = self.sina.get_index_data(['sh000001'])
-            sina_index = self._sina_extract_index(sina_data)
-            if sina_index is not None:
-                # 校验新浪返回的日期是否匹配请求的日期
-                quotes = sina_data.get("data", [])
-                sina_date_match = any(
-                    q.get("code") == "sh000001" and q.get("date") == date_str
-                    for q in quotes
-                )
-                if sina_date_match:
-                    sh_index = sina_index["shanghai_index"]
-                    summary["shanghai_change_pct"] = sina_index["shanghai_change_pct"]
-
-        # Tier 3: 指南针/模拟数据（兜底）
+        # Tier 2: 指南针/模拟（补充TDX无法提供的字段）
         if "data" in compass_data:
             data = compass_data["data"]
-            if sh_index is not None:
-                summary["shanghai_index"] = sh_index
-            else:
+            if summary["shanghai_index"] == 0:
                 summary["shanghai_index"] = data.get("shanghai_index", 0)
             if summary["shanghai_change_pct"] == 0:
                 summary["shanghai_change_pct"] = data.get("shanghai_change_pct", 0)
-            summary.update({
-                "shanghai_change_pct": data.get("shanghai_change_pct", 0),
-                "volume": data.get("volume", 0),
-                "active_market_value_change": data.get("active_market_value_change", 0),
-                "limit_up_count": data.get("limit_up_count", 0),
-                "limit_down_count": data.get("limit_down_count", 0),
-                "main_sectors": data.get("main_sectors", []),
-                "market_stage": data.get("market_stage", "未知"),
-            })
+            if summary["volume"] == 0:
+                summary["volume"] = data.get("volume", 0)
+            if summary["active_market_value_change"] == 0:
+                summary["active_market_value_change"] = data.get("active_market_value_change", 0)
+            if summary["limit_up_count"] == 0:
+                summary["limit_up_count"] = data.get("limit_up_count", 0)
+            if summary["limit_down_count"] == 0:
+                summary["limit_down_count"] = data.get("limit_down_count", 0)
+            if not summary["main_sectors"]:
+                summary["main_sectors"] = data.get("main_sectors", [])
+            if summary["market_stage"] == "未知":
+                summary["market_stage"] = data.get("market_stage", "未知")
 
         return summary
 

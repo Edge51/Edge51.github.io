@@ -195,24 +195,14 @@ class ReviewGenerator:
         pre_plan: Optional[Dict] = None,
         personal_state: str = ""
     ) -> str:
-        """
-        生成每日复盘报告
-
-        Args:
-            date: 日期
-            market_data: 市场数据
-            trades: 交易记录
-            pre_plan: 盘前计划
-            personal_state: 个人状态
-        """
-
-        market_stage = market_data.get('market_stage', '未知')
+        market_stage = market_data.get('market_stage', '')
         shanghai_index = market_data.get('shanghai_index', 0)
         shanghai_change = market_data.get('shanghai_change_pct', 0)
         shanghai_open = market_data.get('shanghai_open', 0)
         shanghai_high = market_data.get('shanghai_high', 0)
         shanghai_low = market_data.get('shanghai_low', 0)
-        volume = market_data.get('volume', 0)
+        volume = market_data.get('volume', 0)        # 成交量（手）
+        amount = market_data.get('amount', 0)         # 成交额（元）
         active_value_change = market_data.get('active_market_value_change', 0)
         limit_up = market_data.get('limit_up_count', 0)
         limit_down = market_data.get('limit_down_count', 0)
@@ -224,55 +214,53 @@ class ReviewGenerator:
             strategy = pre_plan.get('strategy', '。')
             risk_warning = pre_plan.get('risk_warning', '。')
         else:
-            market_prediction = "。"
-            focus_areas = "。"
-            strategy = "。"
-            risk_warning = "。"
+            market_prediction = ""
+            focus_areas = ""
+            strategy = ""
+            risk_warning = ""
 
         trade_rows = []
         for trade in trades:
-            desc_clean = trade.description.replace('\n', ' ').replace('**', '').strip()
-
-            row = f"| {trade.time} | {trade.code} | {trade.name} | {trade.direction} | {trade.price} | {trade.quantity} | {trade.position_ratio} | {trade.mode} | **{desc_clean}** | {trade.trade_id} |"
+            desc_clean = trade.description.replace('\n', ' ').strip()
+            row = f"| {trade.name} | {trade.direction} | {trade.mode} | {desc_clean} |"
             trade_rows.append(row)
+        trade_table = "\n".join(trade_rows) if trade_rows else "| | | | |"
 
-        if not trade_rows:
-            trade_rows = ["| | | | | | | | | | |"]
+        sectors_str = '、'.join(main_sectors) if isinstance(main_sectors, list) else str(main_sectors)
 
-        trade_table = "\n".join(trade_rows)
+        amount_str = f"{float(amount) / 100000000:.0f}亿" if amount and float(amount) > 1000000000 else ""
+        change_str = f"{shanghai_change:+.2f}%" if shanghai_change != 0 else ""
+        index_str = f"{shanghai_index:.2f} ({change_str})" if change_str else f"{shanghai_index:.2f}"
+        active_str = f"{active_value_change:+.2f}%"
 
-        volume_billions = volume / 100000000
-        vol_label = f"{volume_billions:.0f}亿" if volume_billions > 0 else "—"
-        direction = '上涨' if shanghai_change > 0 else '下跌' if shanghai_change < 0 else '平盘'
-        vol_direction = '放量' if shanghai_change > 0 and volume_billions > 3500 else '缩量'
+        ohlc_str = ""
+        if shanghai_open or shanghai_high or shanghai_low:
+            amplitude = round(shanghai_high - shanghai_low, 2) if shanghai_high and shanghai_low else 0
+            ohlc_str = f"\n| 开盘/最高/最低 | {shanghai_open:.2f}/{shanghai_high:.2f}/{shanghai_low:.2f} | 振幅{amplitude} |"
 
         review = f"""### {date} | 市场阶段：{market_stage} | 个人状态：{personal_state}
 
 #### 一、盘前计划
-- **大盘预判**：。
-- **关注方向**：。
-- **今日策略**：。
-- **风险警示**：。
+- **大盘预判**：{market_prediction}
+- **关注方向**：{focus_areas}
+- **今日策略**：{strategy}
+- **风险警示**：{risk_warning}
 
 #### 二、市场数据（盘后更新）
 
-| 指标 | 数值 |
-| :--- | :--- |
-| 上证指数 | {shanghai_index:.2f}（{shanghai_change:+.2f}%） |
-| 开盘 | {shanghai_open:.2f} |
-| 最高 | {shanghai_high:.2f} |
-| 最低 | {shanghai_low:.2f} |
-| 成交额 | {vol_label} |
-| 活跃市值变化 | {active_value_change:+.2f}% |
-| 涨停 | {limit_up} |
-| 跌停 | {limit_down} |
-| 主线板块 | {', '.join(main_sectors) if main_sectors else '待观察'} |
-| 市场阶段 | {market_stage} |
+| 指标 | 数值 | 解读 |
+| :--- | :--- | :--- |
+| 上证指数 | {index_str} |{amount_str}|
+| 开盘/最高/最低 | {shanghai_open:.2f}/{shanghai_high:.2f}/{shanghai_low:.2f} | 振幅{amplitude} |
+| 活跃市值 |{active_str} | |
+| 涨停家数 | {limit_up} | |
+| 跌停家数 | {limit_down} | |
+| 主线板块 | {sectors_str} | |
 
 #### 三、交易记录
 
-| 时间 | 代码 | 名称 | 方向 | 价格 | 数量 | 仓位 | 模式 | 买卖点描述（关键！） | 交易ID |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 名称 | 方向 | 定式 | 买卖点描述（关键！） |
+| :--- | :--- | :--- | :--- |
 {trade_table}
 
 #### 四、交易逻辑与深度复盘
@@ -393,8 +381,8 @@ class ReviewTemplateManager:
 | 主线板块 | {main_sectors} | |
 
 #### 三、交易记录
-| 时间 | 代码 | 名称 | 方向 | 价格 | 数量 | 仓位 | 模式 | 买卖点描述（关键！） | 交易ID |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 名称 | 方向 | 定式 | 买卖点描述（关键！） |
+| :--- | :--- | :--- | :--- |
 {trade_table}
 
 #### 四、交易逻辑与深度复盘

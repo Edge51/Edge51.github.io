@@ -23,19 +23,34 @@ class TdxDataReader:
     def __init__(self, data_path: Optional[str] = None):
         self.data_path = data_path or self._detect_tdx_path()
 
+    def _locate_file(self, code: str, market: str = "sh") -> Optional[str]:
+        """在多个可能的目录结构中查找通达信数据文件。"""
+        filename = f"{market}{code}.day"
+        search_paths = [
+            # 1. 平铺结构: {data_path}/sh000001.day
+            os.path.join(self.data_path, filename),
+            # 2. {data_path}/lday/sh000001.day
+            os.path.join(self.data_path, "lday", filename),
+            # 3. vipdoc结构: {data_path}/vipdoc/sh/lday/sh000001.day
+            os.path.join(self.data_path, "vipdoc", market, "lday", filename),
+            # 4. {data_path}/../{market}{code}.day (data_path可能是sh/lday)
+            os.path.join(os.path.dirname(self.data_path), filename),
+            # 5. {data_path}/../{market}/lday/{filename} (data_path可能是vipdoc)
+            os.path.join(self.data_path, market, "lday", filename),
+        ]
+        for path in search_paths:
+            if os.path.exists(path):
+                return path
+        return None
+
     def _detect_tdx_path(self) -> str:
-        # Linux TDX (tdx-bin from AUR)
+        # Linux TDX (tdx-bin from AUR, Wine bottle)
         xdg_data = os.environ.get('XDG_DATA_HOME', os.path.expanduser('~/.local/share'))
-        linux_lday = os.path.join(xdg_data, 'tdxcfv/drive_c/tc/vipdoc/sh/lday')
-        if os.path.exists(os.path.join(linux_lday, 'sh000001.day')):
-            return linux_lday
+        linux_root = os.path.join(xdg_data, 'tdxcfv/drive_c/tc')
+        if os.path.exists(os.path.join(linux_root, 'vipdoc/sh/lday/sh000001.day')):
+            return linux_root
 
-        # hikyuu test data
-        hikyuu_lday = os.path.expanduser('~/Projects/hikyuu/test_data/vipdoc/sh/lday')
-        if os.path.exists(os.path.join(hikyuu_lday, 'sh000001.day')):
-            return hikyuu_lday
-
-        # Windows TDX paths
+        # Windows TDX paths  
         possible_paths = [
             "C:/TdxW/data",
             "C:/通达信/data",
@@ -49,7 +64,12 @@ class TdxDataReader:
             if os.path.exists(sh_path):
                 return path
 
-        return linux_lday
+        # hikyuu test data
+        hikyuu_root = os.path.expanduser('~/Projects/hikyuu')
+        if os.path.exists(os.path.join(hikyuu_root, 'test_data/vipdoc/sh/lday/sh000001.day')):
+            return os.path.join(hikyuu_root, 'test_data')
+
+        return linux_root
 
     @staticmethod
     def _detect_header_size(file_path: str) -> int:
@@ -65,13 +85,10 @@ class TdxDataReader:
         return 52
 
     def read_day_file(self, code: str, market: str = "sh") -> pd.DataFrame:
-        file_path = os.path.join(self.data_path, f"{market}{code}.day")
+        file_path = self._locate_file(code, market)
 
-        if not os.path.exists(file_path):
-            file_path = os.path.join(self.data_path, f"{code}.day")
-
-        if not os.path.exists(file_path):
-            raise FileNotFoundError(f"Data file not found: {file_path}")
+        if not file_path:
+            raise FileNotFoundError(f"Data file not found for {market}{code}.day (searched multiple paths under {self.data_path})")
 
         header_size = self._detect_header_size(file_path)
 

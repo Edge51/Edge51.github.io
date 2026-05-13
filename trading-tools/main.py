@@ -189,6 +189,64 @@ def cmd_full_review(date_str: Optional[str] = None) -> str:
 
     return ""
 
+POST_PATH = os.path.join(os.path.dirname(__file__), '../_posts/2026-04-16-blog-post-trade-record.md')
+
+def cmd_append_review(date_str: Optional[str] = None) -> str:
+    """
+    生成当日复盘模板并追加到博客文件
+    工作流：获取TDX大盘数据 → 生成复盘模板 → 追加到 _posts/2026-04-16-blog-post-trade-record.md
+    """
+    date_str = date_str or datetime.now().strftime('%Y-%m-%d')
+    today = datetime.now()
+
+    weekday_map = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+    weekday_str = weekday_map[today.weekday()]
+
+    print(f"正在为 {date_str} ({weekday_str}) 生成复盘模板...")
+
+    agg = MarketDataAggregator()
+    market_data = agg.get_daily_summary(date_str)
+
+    gen = ReviewGenerator()
+    review = gen.generate_daily_review(date_str, market_data, [])
+
+    lines = review.strip().split('\n')
+    lines[0] = f"### {date_str} {weekday_str} | 市场阶段：{market_data.get('market_stage', '')} | 个人状态："
+    review = '\n'.join(lines)
+
+    print("\n=== 复盘模板预览 ===")
+    print(review)
+
+    post_path = os.path.abspath(POST_PATH)
+    if not os.path.exists(post_path):
+        print(f"错误：找不到博客文件 {post_path}")
+        return review
+
+    with open(post_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    insert_marker = f"### {date_str}"
+    if insert_marker in content:
+        print(f"文件已包含 {date_str} 的复盘记录，更新中...")
+        start = content.index(insert_marker)
+        next_section = content.find("\n### ", start + 1)
+        if next_section == -1:
+            content = content[:start] + review.strip() + "\n\n"
+        else:
+            content = content[:start] + review.strip() + "\n\n" + content[next_section:]
+    else:
+        first_section = content.find("\n### 20")
+        if first_section == -1:
+            content += "\n\n" + review.strip() + "\n"
+        else:
+            content = content[:first_section] + "\n\n" + review.strip() + "\n\n" + content[first_section:].lstrip('\n')
+
+    with open(post_path, 'w', encoding='utf-8') as f:
+        f.write(content)
+
+    print(f"\n复盘模板已追加到: {post_path}")
+    return review
+
 def main():
     parser = argparse.ArgumentParser(
         description='交易复盘工具 - 自动获取市场数据、解析交易记录、生成复盘报告',
@@ -225,6 +283,9 @@ def main():
     full_review_parser = subparsers.add_parser('full-review', help='完整复盘流程（交互式）')
     full_review_parser.add_argument('--date', '-d', help='日期 (YYYY-MM-DD)')
 
+    append_parser = subparsers.add_parser('append-review', help='生成今日复盘模板并追加到博客')
+    append_parser.add_argument('--date', '-d', help='日期 (YYYY-MM-DD)，默认今天')
+
     args = parser.parse_args()
 
     if args.command == 'fetch-market':
@@ -254,6 +315,9 @@ def main():
 
     elif args.command == 'full-review':
         cmd_full_review(args.date)
+
+    elif args.command == 'append-review':
+        cmd_append_review(args.date)
 
     else:
         parser.print_help()

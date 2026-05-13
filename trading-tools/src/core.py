@@ -147,11 +147,9 @@ def generate_review_markdown(
 ) -> str:
     trade_rows = []
     for trade in trades:
-        trade_rows.append(f"| {trade.time} | {trade.code} | {trade.name} | "
-                         f"{trade.direction} | {trade.price} | {trade.quantity} | "
-                         f"{trade.position_ratio} | {trade.mode} | {trade.description} | {trade.trade_id} |")
+        trade_rows.append(f"| {trade.name} | {trade.direction} | {trade.mode} | {trade.description} |")
 
-    trade_table = "\n".join(trade_rows) if trade_rows else "| | | | | | | | | | |"
+    trade_table = "\n".join(trade_rows) if trade_rows else "| | | | |"
 
     pre_plan_section = pre_plan or {}
     market_stage_str = market_stage or pre_plan_section.get('market_stage', '')
@@ -186,8 +184,8 @@ tags:
 
 #### 三、交易记录
 
-| 时间 | 代码 | 名称 | 方向 | 价格 | 数量 | 仓位 | 模式 | 买卖点描述（关键！） | 交易ID |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 名称 | 方向 | 定式 | 买卖点描述（关键！） |
+| :--- | :--- | :--- | :--- |
 {trade_table}
 
 #### 四、交易逻辑与深度复盘
