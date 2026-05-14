@@ -191,7 +191,7 @@ def cmd_full_review(date_str: Optional[str] = None) -> str:
 
 POST_PATH = os.path.join(os.path.dirname(__file__), '../_posts/2026-04-16-blog-post-trade-record.md')
 
-def cmd_append_review(date_str: Optional[str] = None) -> str:
+def cmd_append_review(date_str: Optional[str] = None, active_value: Optional[float] = None) -> str:
     """
     生成当日复盘模板并追加到博客文件
     工作流：获取TDX大盘数据 → 生成复盘模板 → 追加到 _posts/2026-04-16-blog-post-trade-record.md
@@ -206,6 +206,9 @@ def cmd_append_review(date_str: Optional[str] = None) -> str:
 
     agg = MarketDataAggregator()
     market_data = agg.get_daily_summary(date_str)
+
+    if active_value is not None:
+        market_data["active_market_value_change"] = active_value
 
     gen = ReviewGenerator()
     review = gen.generate_daily_review(date_str, market_data, [])
@@ -285,6 +288,7 @@ def main():
 
     append_parser = subparsers.add_parser('append-review', help='生成今日复盘模板并追加到博客')
     append_parser.add_argument('--date', '-d', help='日期 (YYYY-MM-DD)，默认今天')
+    append_parser.add_argument('--active-value', type=float, help='活跃市值涨跌幅数值，如 -1.55')
 
     args = parser.parse_args()
 
@@ -317,7 +321,7 @@ def main():
         cmd_full_review(args.date)
 
     elif args.command == 'append-review':
-        cmd_append_review(args.date)
+        cmd_append_review(args.date, active_value=args.active_value)
 
     else:
         parser.print_help()

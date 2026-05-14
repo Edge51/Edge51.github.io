@@ -92,52 +92,83 @@ class TdxDataReader:
 
         header_size = self._detect_header_size(file_path)
 
+        records = self._read_all_records(file_path, header_size)
+        if not records:
+            return pd.DataFrame()
+
+        dates, opens, highs, lows, closes, volumes, amounts = zip(*records)
+        return pd.DataFrame({
+            'date': dates, 'open': opens, 'high': highs, 'low': lows,
+            'close': closes, 'volume': volumes, 'amount': amounts
+        })
+
+    def _read_all_records(self, file_path: str, header_size: int = 0) -> list:
+        """读取 .day 文件所有记录。"""
+        records = []
         with open(file_path, 'rb') as f:
             f.read(header_size)
-
-            dates = []
-            opens = []
-            highs = []
-            lows = []
-            closes = []
-            volumes = []
-            amounts = []
-
             while True:
                 data = f.read(self.RECORD_SIZE)
                 if len(data) < self.RECORD_SIZE:
                     break
-
                 try:
-                    date = datetime.strptime(str(struct.unpack('<I', data[0:4])[0]), '%Y%m%d')
-                    o = struct.unpack('<I', data[4:8])[0] / 100.0
-                    h = struct.unpack('<I', data[8:12])[0] / 100.0
-                    l = struct.unpack('<I', data[12:16])[0] / 100.0
-                    c = struct.unpack('<I', data[16:20])[0] / 100.0
-                    v = struct.unpack('<I', data[20:24])[0]
-                    a = struct.unpack('<I', data[24:28])[0]
+                    raw_date = struct.unpack('<I', data[0:4])[0]
+                    date = datetime.strptime(str(raw_date), '%Y%m%d')
+                    records.append((
+                        date,
+                        struct.unpack('<I', data[4:8])[0] / 100.0,
+                        struct.unpack('<I', data[8:12])[0] / 100.0,
+                        struct.unpack('<I', data[12:16])[0] / 100.0,
+                        struct.unpack('<I', data[16:20])[0] / 100.0,
+                        struct.unpack('<I', data[20:24])[0],
+                        struct.unpack('<I', data[24:28])[0],
+                    ))
+                except (ValueError, struct.error):
+                    continue
+        return records
 
+    def read_last_records(self, code: str, market: str = "sh", n: int = 2) -> pd.DataFrame:
+        """高效读取 .day 文件的最后 N 条记录（不扫描整个文件）。"""
+        file_path = self._locate_file(code, market)
+        if not file_path:
+            return pd.DataFrame()
+
+        header_size = self._detect_header_size(file_path)
+
+        with open(file_path, 'rb') as f:
+            f.seek(0, 2)
+            file_size = f.tell()
+            record_area = file_size - header_size
+            total_records = record_area // self.RECORD_SIZE
+            if total_records < 1:
+                return pd.DataFrame()
+
+            n_read = min(n, total_records)
+            start_offset = header_size + (total_records - n_read) * self.RECORD_SIZE
+            f.seek(start_offset)
+
+            dates, opens, highs, lows, closes, volumes, amounts = [], [], [], [], [], [], []
+            for _ in range(n_read):
+                data = f.read(self.RECORD_SIZE)
+                if len(data) < self.RECORD_SIZE:
+                    break
+                try:
+                    raw_date = struct.unpack('<I', data[0:4])[0]
+                    date = datetime.strptime(str(raw_date), '%Y%m%d')
                     dates.append(date)
-                    opens.append(o)
-                    highs.append(h)
-                    lows.append(l)
-                    closes.append(c)
-                    volumes.append(v)
-                    amounts.append(a)
-                except:
+                    opens.append(struct.unpack('<I', data[4:8])[0] / 100.0)
+                    highs.append(struct.unpack('<I', data[8:12])[0] / 100.0)
+                    lows.append(struct.unpack('<I', data[12:16])[0] / 100.0)
+                    closes.append(struct.unpack('<I', data[16:20])[0] / 100.0)
+                    volumes.append(struct.unpack('<I', data[20:24])[0])
+                    amounts.append(struct.unpack('<I', data[24:28])[0])
+                except (ValueError, struct.error):
                     continue
 
-        df = pd.DataFrame({
-            'date': dates,
-            'open': opens,
-            'high': highs,
-            'low': lows,
-            'close': closes,
-            'volume': volumes,
-            'amount': amounts
+        return pd.DataFrame({
+            'date': dates, 'open': opens, 'high': highs, 'low': lows,
+            'close': closes, 'volume': volumes, 'amount': amounts
         })
-
-        return df
 
     def read_minute_file(self, code: str, market: str = "sh", minute_type: int = 1) -> pd.DataFrame:
         """

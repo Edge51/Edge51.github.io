@@ -206,6 +206,9 @@ class ReviewGenerator:
         active_value_change = market_data.get('active_market_value_change', 0)
         limit_up = market_data.get('limit_up_count', 0)
         limit_down = market_data.get('limit_down_count', 0)
+        up_count = market_data.get('up_count', 0)
+        flat_count = market_data.get('flat_count', 0)
+        down_count = market_data.get('down_count', 0)
         main_sectors = market_data.get('main_sectors', [])
 
         if pre_plan:
@@ -255,6 +258,7 @@ class ReviewGenerator:
 | 活跃市值 |{active_str} | |
 | 涨停家数 | {limit_up} | |
 | 跌停家数 | {limit_down} | |
+| 涨:平:跌 | {up_count}:{flat_count}:{down_count} | |
 | 主线板块 | {sectors_str} | |
 
 #### 三、交易记录

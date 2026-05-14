@@ -9,6 +9,7 @@ import json
 import requests
 from typing import Optional, Dict, List
 from .tdx_reader import TdxDataReader, get_market_status as get_market_stage
+from .market_stats import MarketStatsCalculator
 from datetime import datetime, date
 from abc import ABC, abstractmethod
 
@@ -380,6 +381,7 @@ class MarketDataAggregator:
         self.compass = CompassDataProvider(config=self.config.get('compass', {}))
         tdx_path = self.config.get('tdx', {}).get('data_path', '')
         self.tdx = TdxDataReader(data_path=tdx_path) if tdx_path else TdxDataReader()
+        self.stats = MarketStatsCalculator(reader=self.tdx)
 
     def get_daily_summary(self, date: Optional[str] = None) -> Dict:
         date_str = date or datetime.now().strftime('%Y-%m-%d')
@@ -414,7 +416,22 @@ class MarketDataAggregator:
             summary["date"] = tdx_index.get("date", date_str)
             summary["market_stage"] = get_market_stage(tdx_index.get("change_pct", 0))
 
-        # Tier 2: 指南针/模拟（补充TDX无法提供的字段）
+        # Tier 2: 通达信市场统计（涨停/跌停/板块）
+        try:
+            limit_stats = self.stats.compute_limit_stats(date_str)
+            summary["limit_up_count"] = limit_stats.get("limit_up", 0)
+            summary["limit_down_count"] = limit_stats.get("limit_down", 0)
+            summary["up_count"] = limit_stats.get("up_count", 0)
+            summary["flat_count"] = limit_stats.get("flat_count", 0)
+            summary["down_count"] = limit_stats.get("down_count", 0)
+
+            sector_data = self.stats.compute_top_sectors(date_str, top_n=5)
+            if sector_data.get("sectors"):
+                summary["main_sectors"] = [s["name"] for s in sector_data["sectors"]]
+        except Exception:
+            pass
+
+        # Tier 3: 指南针/模拟（补充TDX无法提供的字段）
         if "data" in compass_data:
             data = compass_data["data"]
             if summary["shanghai_index"] == 0:
