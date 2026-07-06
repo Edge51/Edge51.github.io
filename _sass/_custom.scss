@@ -490,6 +490,97 @@ table {
   display: none;
 }
 
+/* -------- CV Page -------- */
+.cv-section {
+  margin-bottom: 2em;
+
+  &__title {
+    font-family: $custom-header-font;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: $warm-heading;
+    margin: 0 0 0.8em;
+    padding-bottom: 0.3em;
+    border-bottom: 2px solid $warm-border-light;
+    letter-spacing: -0.02em;
+  }
+}
+
+.cv-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+
+  &__item {
+    padding: 1em 1.2em;
+    background: $warm-surface;
+    border: 1px solid $warm-border-light;
+    border-radius: $border-radius-soft;
+    box-shadow: $shadow-card;
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: $shadow-card-hover;
+    }
+  }
+
+  &__title {
+    display: block;
+    font-size: 1.05em;
+    font-weight: 700;
+    color: $warm-heading;
+    margin-bottom: 0.2em;
+  }
+
+  &__meta {
+    display: block;
+    font-size: 0.85em;
+    color: $warm-text-light;
+    margin-bottom: 0.6em;
+  }
+}
+
+.cv-sublist {
+  list-style: disc;
+  padding-left: 1.2em;
+  margin: 0.4em 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+
+  li {
+    font-size: 0.88em;
+    color: $warm-text;
+    line-height: 1.5;
+  }
+}
+
+.cv-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.cv-tag {
+  display: inline-block;
+  padding: 0.25em 0.7em;
+  font-size: 0.82em;
+  font-weight: 500;
+  color: $warm-primary;
+  background: $warm-tag-bg;
+  border-radius: $border-radius-pill;
+  line-height: 1.5;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #fff;
+    background: $warm-primary;
+  }
+}
+
 /* -------- Code Block Header (language label) -------- */
 .code-header {
   padding: 0.3em 1em;
