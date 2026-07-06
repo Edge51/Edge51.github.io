@@ -582,6 +582,14 @@ table {
 }
 
 /* -------- Code Block Header (language label) -------- */
+
+/* Remove the theme's built-in code icon (incompatible with FA5) */
+div.highlighter-rouge::before,
+figure.highlight::before {
+  display: none !important;
+  content: none !important;
+}
+
 .code-header {
   padding: 0.3em 1em;
   font-size: 0.75em;
