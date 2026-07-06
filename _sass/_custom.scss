@@ -589,6 +589,9 @@ table {
 
 /* -------- Hero Section -------- */
 .home-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   padding: 2em 1em 1em;
   animation: intro 0.3s both;
@@ -626,8 +629,9 @@ table {
     font-size: 1.1em;
     color: $warm-text-light;
     max-width: 480px;
-    margin: 0 auto 0.8em;
+    margin: 0 0 0.8em;
     line-height: 1.6;
+    text-align: center;
   }
 
   &__location {
