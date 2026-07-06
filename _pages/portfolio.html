@@ -1,14 +1,23 @@
 ---
 layout: archive
-title: "Portfolio"
-permalink: /portfolio/
+title: "Projects"
+permalink: /projects/
+redirect_from:
+  - /portfolio/
 author_profile: true
 ---
 
 {% include base_path %}
 
-
-{% for post in site.portfolio %}
-  {% include archive-single.html %}
-{% endfor %}
+{% if site.portfolio.size > 0 %}
+  <div class="page--portfolio">
+    <div class="archive">
+      {% for post in site.portfolio %}
+        {% include archive-single-portfolio.html %}
+      {% endfor %}
+    </div>
+  </div>
+{% else %}
+  <p style="text-align:center;color:#8a7f7a;padding:3em 0;">Projects coming soon...</p>
+{% endif %}
 

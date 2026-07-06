@@ -517,6 +517,132 @@ table {
   pointer-events: none;
 }
 
+/* -------- Portfolio Grid -------- */
+.portfolio__item {
+  break-inside: avoid;
+}
+
+.portfolio__card {
+  display: flex;
+  flex-direction: column;
+  background: $warm-surface;
+  border: 1px solid $warm-border-light;
+  border-radius: $border-radius-soft;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: $shadow-card;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-card-hover;
+    border-color: $warm-primary;
+
+    .portfolio__image img {
+      transform: scale(1.03);
+    }
+  }
+}
+
+.portfolio__image {
+  overflow: hidden;
+  background: $warm-code-bg;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+}
+
+.portfolio__body {
+  padding: 1.2em 1.4em 1.4em;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio__title {
+  margin: 0 0 0.4em;
+  font-size: 1.1em;
+  font-weight: 700;
+  line-height: 1.35;
+
+  a {
+    color: $warm-heading;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $warm-primary;
+    }
+  }
+}
+
+.portfolio__excerpt {
+  margin: 0 0 1em;
+  font-size: 0.85em;
+  color: $warm-text-light;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.portfolio__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6em;
+  margin-top: auto;
+}
+
+.portfolio__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+}
+
+.portfolio__tag {
+  display: inline-block;
+  padding: 0.15em 0.55em;
+  font-size: 0.72em;
+  font-weight: 500;
+  color: $warm-primary;
+  background: $warm-tag-bg;
+  border-radius: $border-radius-pill;
+  line-height: 1.5;
+}
+
+.portfolio__github {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  margin-left: auto;
+  font-size: 0.78em;
+  font-weight: 500;
+  color: $warm-text-light;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  transition: color 0.2s ease;
+
+  i {
+    font-size: 1.1em;
+  }
+
+  &:hover {
+    color: $warm-primary;
+  }
+}
+
+/* Portfolio grid layout */
+.page--portfolio .archive {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.2em;
+}
+
 /* -------- Archive / Blog List -------- */
 .list__item .archive__item {
   background: $warm-surface;
