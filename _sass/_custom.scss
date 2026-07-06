@@ -121,6 +121,12 @@ body {
   img {
     border-radius: $border-radius-soft;
     box-shadow: $shadow-card;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: scale(1.01);
+      box-shadow: $shadow-card-hover;
+    }
   }
 
   /* Horizontal rule */
@@ -152,6 +158,11 @@ a {
   &:hover {
     color: $warm-link-hover;
   }
+}
+
+/* -------- Smooth Scroll -------- */
+html {
+  scroll-behavior: smooth;
 }
 
 /* -------- Selection -------- */
