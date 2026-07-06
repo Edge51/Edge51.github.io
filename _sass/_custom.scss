@@ -479,6 +479,72 @@ table {
   display: none;
 }
 
+/* -------- Archive / Blog List -------- */
+.list__item .archive__item {
+  background: $warm-surface;
+  border-color: $warm-border-light;
+
+  &::before {
+    background: $warm-primary;
+  }
+
+  &:hover {
+    border-color: $warm-primary;
+  }
+
+  .archive__item-title {
+    font-family: $custom-header-font;
+    color: $warm-heading;
+
+    a {
+      color: $warm-heading;
+
+      &:hover {
+        color: $warm-primary;
+      }
+    }
+  }
+
+  .archive__item-excerpt {
+    color: $warm-text;
+    font-size: 0.9em;
+    line-height: 1.6;
+  }
+
+  .archive__item-tag {
+    color: $warm-primary;
+    background: $warm-tag-bg;
+
+    &:hover {
+      color: #fff;
+      background: $warm-primary;
+    }
+  }
+
+  .archive__item-date,
+  .archive__item-readtime {
+    color: $warm-text-light;
+
+    i {
+      color: $warm-muted;
+    }
+  }
+}
+
+.archive__subtitle {
+  color: $warm-heading;
+  font-family: $custom-header-font;
+
+  &::after {
+    background: linear-gradient(90deg, $warm-border 0%, transparent 100%);
+  }
+}
+
+.archive__subtitle-count {
+  color: $warm-text-light;
+  background: $warm-tag-bg;
+}
+
 /* ==========================================================================
    HOMEPAGE
    ========================================================================== */
