@@ -53,6 +53,8 @@
         }
       }
     }
+    /* Don't show label for unspecified or plain text blocks */
+    if (lang === 'plaintext' || lang === 'none') lang = '';
     if (lang) {
       var header = document.createElement('div');
       header.className = 'code-header';
