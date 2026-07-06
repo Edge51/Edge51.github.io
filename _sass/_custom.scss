@@ -984,6 +984,28 @@ table {
   }
 }
 
+/* -------- Home Bio -------- */
+.home-bio {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1em 1em 3em;
+  text-align: center;
+
+  &__content {
+    font-size: 0.95em;
+    color: $warm-text;
+    line-height: 1.7;
+
+    p {
+      margin: 0 0 1em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
 /* -------- Categories -------- */
 .home-categories {
   padding: 1em 1em 2.5em;

@@ -13,4 +13,5 @@ redirect_from:
 {% include home/hero.html %}
 {% include home/stats.html %}
 {% include home/featured.html %}
-{% include home/categories.html %} 
+{% include home/categories.html %}
+{% include home/bio.html %} 
