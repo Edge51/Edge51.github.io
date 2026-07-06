@@ -295,3 +295,186 @@ table {
     background: $warm-primary;
   }
 }
+
+/* -------- Masthead / Navigation -------- */
+.masthead {
+  background: rgba($warm-bg, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom-color: $warm-border-light;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &__inner-wrap {
+    padding: 0.8em 1em;
+  }
+
+  &__menu-item {
+    font-family: $custom-body-font;
+    font-size: 0.9em;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+
+    &--lg {
+      font-family: $custom-header-font;
+      font-size: 1.15em;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: $warm-heading;
+
+      a {
+        color: $warm-heading !important;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: $warm-primary !important;
+        }
+      }
+    }
+
+    a {
+      color: $warm-text;
+      position: relative;
+      transition: color 0.2s ease;
+      padding-bottom: 2px;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: $warm-primary;
+        transition: width 0.25s ease;
+        border-radius: 1px;
+      }
+
+      &:hover {
+        color: $warm-primary;
+
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+/* Greedy nav button (mobile) */
+.greedy-nav {
+  background: transparent;
+
+  .visible-links {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+  }
+
+  .hidden-links {
+    background: $warm-bg;
+    border: 1px solid $warm-border-light;
+    border-radius: $border-radius-soft;
+    box-shadow: $shadow-elevated;
+
+    a {
+      color: $warm-text;
+      padding: 0.5em 1.2em;
+
+      &:hover {
+        color: $warm-primary;
+        background: $warm-tag-bg;
+      }
+    }
+  }
+
+  button {
+    color: $warm-text;
+    padding: 0.5em;
+
+    .navicon {
+      &::before,
+      &::after {
+        background: $warm-text;
+      }
+    }
+  }
+}
+
+/* -------- Footer -------- */
+.page__footer {
+  background: linear-gradient(to top, $warm-bg, transparent);
+  border-top: 1px solid $warm-border-light;
+  color: $warm-text-light;
+
+  footer {
+    margin-top: 1em;
+    padding: 0 1em 1.5em;
+    max-width: $content-max-width;
+  }
+
+  a {
+    color: $warm-text-light;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $warm-primary;
+      text-decoration: none;
+    }
+  }
+}
+
+.page__footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6em;
+  text-align: center;
+}
+
+.page__footer-colophon {
+  font-size: 0.8em;
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.page__footer-sep {
+  color: $warm-border;
+}
+
+.page__footer-social {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    color: $warm-text-light;
+    font-size: 1.1em;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: $warm-primary;
+      background: $warm-tag-bg;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* Remove old footer styles */
+.page__footer-follow {
+  display: none;
+}
+
+.page__footer-copyright {
+  display: none;
+}
