@@ -9,5 +9,7 @@ comments:
   disqus:
     shortname            : "mmistakes-dev"
 
+timezone: Asia/Shanghai
+
 sass:
   style: expanded
