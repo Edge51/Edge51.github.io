@@ -12,6 +12,7 @@
 
 @import "vendor/breakpoint/breakpoint"; // media query mixins
 @import "variables";
+@import "custom-variables"; // warm tone palette
 @import "mixins";
 @import "vendor/susy/susy";
 
@@ -39,3 +40,6 @@
 @import "vendor/font-awesome/brands";
 @import "vendor/magnific-popup/magnific-popup";
 @import "print";
+
+/* Custom warm-tone overrides (load last to win specificity) */
+@import "custom";

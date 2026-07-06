@@ -1,0 +1,297 @@
+/* ==========================================================================
+   CUSTOM STYLES — warm tone overrides
+   Place all custom overrides here, never modify theme core files.
+   ========================================================================== */
+
+/* -------- Override Theme Variables -------- */
+$primary-color          : $warm-primary;
+$link-color             : $warm-primary;
+$link-color-hover       : $warm-link-hover;
+$link-color-visited     : $warm-accent;
+$masthead-link-color    : $warm-text;
+$masthead-link-color-hover: $warm-primary;
+$text-color             : $warm-text;
+$border-color           : $warm-border;
+$body-color             : $warm-bg;
+$background-color       : $warm-bg;
+$code-background-color  : $warm-code-bg;
+$code-background-color-dark: $warm-border;
+$lighter-gray           : $warm-border-light;
+$light-gray             : $warm-border;
+$gray                   : $warm-text-light;
+$dark-gray              : $warm-text;
+$darker-gray            : $warm-heading;
+$global-font-family     : $custom-body-font;
+$header-font-family     : $custom-header-font;
+$monospace              : $custom-mono-font;
+$box-shadow             : $shadow-card;
+$border-radius          : 8px;
+
+/* -------- Global Background -------- */
+html {
+  background-color: $warm-bg;
+}
+
+body {
+  background-color: $warm-bg;
+  color: $warm-text;
+}
+
+/* -------- Typography Tweaks -------- */
+.page__content {
+  font-size: 1.05em;
+  line-height: 1.8;
+  color: $warm-text;
+
+  p {
+    margin-bottom: 1.5em;
+  }
+
+  h2 {
+    margin-top: 2.2em;
+    padding-bottom: 0.4em;
+    border-bottom: 2px solid $warm-border-light;
+    color: $warm-heading;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    margin-top: 1.8em;
+    color: $warm-heading;
+    font-weight: 600;
+  }
+
+  a {
+    color: $warm-primary;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      color: $warm-link-hover;
+      border-bottom-color: $warm-link-hover;
+    }
+
+    &:visited {
+      color: $warm-accent;
+    }
+
+    /* Don't underline images or buttons */
+    img { border-bottom: none; }
+  }
+
+  /* Blockquotes */
+  blockquote {
+    margin: 2em 0;
+    padding: 1em 1.5em;
+    border-left: 4px solid $warm-primary;
+    background: lighten($warm-primary, 34%);
+    border-radius: 0 $border-radius-soft $border-radius-soft 0;
+    color: $warm-text;
+    font-style: normal;
+
+    p {
+      margin-bottom: 0.5em;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    cite {
+      font-style: italic;
+      color: $warm-text-light;
+    }
+  }
+
+  /* Inline code */
+  p > code,
+  li > code,
+  td > code {
+    padding: 0.15em 0.4em;
+    font-size: 0.9em;
+    color: $warm-heading;
+    background: $warm-code-bg;
+    border: 1px solid $warm-border-light;
+    border-radius: 6px;
+  }
+
+  /* Images */
+  img {
+    border-radius: $border-radius-soft;
+    box-shadow: $shadow-card;
+  }
+
+  /* Horizontal rule */
+  hr {
+    margin: 2.5em 0;
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, $warm-border, transparent);
+  }
+}
+
+/* -------- Headings -------- */
+h1, h2, h3, h4, h5, h6 {
+  color: $warm-heading;
+  letter-spacing: -0.02em;
+}
+
+.page__title {
+  color: $warm-heading;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* -------- Links (global) -------- */
+a {
+  color: $warm-primary;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $warm-link-hover;
+  }
+}
+
+/* -------- Selection -------- */
+::selection {
+  background: rgba($warm-primary, 0.2);
+  color: $warm-heading;
+}
+
+/* -------- Code Blocks (highlighted) -------- */
+.highlight {
+  border-radius: $border-radius-soft;
+  background: $warm-code-bg;
+  border: 1px solid $warm-border-light;
+
+  pre {
+    margin: 0;
+    padding: 1.2em 1em;
+    font-size: 0.9em;
+    line-height: 1.6;
+  }
+}
+
+div.highlighter-rouge {
+  margin: 1.5em 0;
+  border-radius: $border-radius-soft;
+  overflow: hidden;
+  border: 1px solid $warm-border-light;
+}
+
+/* -------- Tables -------- */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0;
+
+  th, td {
+    padding: 0.6em 1em;
+    border: 1px solid $warm-border-light;
+    text-align: left;
+  }
+
+  th {
+    background: $warm-code-bg;
+    color: $warm-heading;
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) {
+    background: rgba($warm-bg, 0.5);
+  }
+
+  tr:hover {
+    background: rgba($warm-primary, 0.04);
+  }
+}
+
+/* -------- Buttons -------- */
+.btn {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn--primary {
+  background: $warm-primary;
+  border-color: $warm-primary;
+
+  &:hover {
+    background: $warm-link-hover;
+    border-color: $warm-link-hover;
+  }
+}
+
+/* -------- Notice Blocks -------- */
+.notice {
+  border-radius: $border-radius-soft;
+  border-left: 4px solid $warm-primary;
+}
+
+.notice--primary {
+  border-color: $warm-primary;
+  background: lighten($warm-primary, 34%);
+  color: $warm-text;
+}
+
+.notice--info {
+  border-color: #52adc8;
+}
+
+.notice--warning {
+  border-color: $warm-accent;
+}
+
+.notice--danger {
+  border-color: #d4756b;
+}
+
+.notice--success {
+  border-color: #7fb87a;
+}
+
+/* -------- Pagination -------- */
+.pagination {
+  a, span {
+    border-radius: 6px !important;
+  }
+
+  a.current, span.current {
+    background: $warm-primary !important;
+    border-color: $warm-primary !important;
+  }
+}
+
+/* -------- Misc -------- */
+.page__hero--overlay {
+  background-color: rgba($warm-heading, 0.85) !important;
+}
+
+.page__lead {
+  font-family: $custom-body-font;
+  color: $warm-text-light;
+}
+
+/* Responsive image helper */
+.img-round {
+  border-radius: $border-radius-soft;
+}
+
+/* Tag-like badges */
+.tag-badge {
+  display: inline-block;
+  padding: 0.15em 0.6em;
+  font-size: 0.75em;
+  font-weight: 500;
+  color: $warm-primary;
+  background: $warm-tag-bg;
+  border-radius: $border-radius-pill;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #fff;
+    background: $warm-primary;
+  }
+}
