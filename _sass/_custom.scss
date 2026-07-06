@@ -549,15 +549,43 @@ table {
     line-height: 1.6;
   }
 
-  .archive__item-tag {
-    color: $warm-primary;
-    background: $warm-tag-bg;
+.archive__item-tag {
+      color: $warm-primary;
+      background: $warm-tag-bg;
 
-    &:hover {
-      color: #fff;
-      background: $warm-primary;
+      &:hover {
+        color: #fff;
+        background: $warm-primary;
+      }
     }
-  }
+
+    .archive__item-status {
+      display: inline-block;
+      padding: 0.1em 0.5em;
+      font-size: 0.75em;
+      font-weight: 600;
+      border-radius: $border-radius-pill;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+
+      &--reading,
+      &--in-progress {
+        color: #b07d3a;
+        background: #fcf2e4;
+      }
+
+      &--read,
+      &--completed {
+        color: #5a8f5a;
+        background: #e8f3e8;
+      }
+
+      &--to-read,
+      &--planned {
+        color: #7a8288;
+        background: #eef0f0;
+      }
+    }
 
   .archive__item-date,
   .archive__item-readtime {

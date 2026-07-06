@@ -15,8 +15,8 @@ redirect_from:
   {% assign group_name = group.name | default: "Uncategorized" %}
   <h2 class="archive__subtitle">{{ group_name }}</h2>
   <div class="archive__year-group">
-  {% for post in group.items reversed %}
-    {% include archive-single.html %}
-  {% endfor %}
+{% for post in group.items reversed %}
+    {% include archive-single-reading.html %}
+    {% endfor %}
   </div>
 {% endfor %}
