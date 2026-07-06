@@ -479,6 +479,33 @@ table {
   display: none;
 }
 
+/* -------- Code Block Header (language label) -------- */
+.code-header {
+  padding: 0.3em 1em;
+  font-size: 0.75em;
+  font-weight: 600;
+  color: $warm-text-light;
+  background: darken($warm-code-bg, 2%);
+  border-bottom: 1px solid $warm-border-light;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* -------- Reading Progress Bar -------- */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, $warm-primary, $warm-accent);
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0 2px 2px 0;
+  pointer-events: none;
+}
+
 /* -------- Archive / Blog List -------- */
 .list__item .archive__item {
   background: $warm-surface;

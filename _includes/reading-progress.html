@@ -1,0 +1,51 @@
+<!-- Reading progress indicator for article pages -->
+<div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
+
+<script>
+(function() {
+  var bar = document.getElementById('readingProgress');
+  if (!bar) return;
+  // Only show on article pages with significant content
+  var onScroll = function() {
+    var scrollTop = window.scrollY;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) { bar.style.width = '0%'; bar.style.opacity = '0'; return; }
+    var progress = Math.min(scrollTop / docHeight, 1);
+    bar.style.width = (progress * 100) + '%';
+    bar.style.opacity = progress > 0.02 && progress < 0.98 ? '1' : '0';
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // initial position
+})();
+
+/* Code block language label */
+(function() {
+  var codeBlocks = document.querySelectorAll('div.highlighter-rouge');
+  for (var i = 0; i < codeBlocks.length; i++) {
+    var block = codeBlocks[i];
+    if (block.querySelector('.code-header')) continue;
+    var pre = block.querySelector('pre');
+    if (!pre) continue;
+    var code = pre.querySelector('code');
+    if (!code) continue;
+    var lang = '';
+    for (var j = 0; j < code.classList.length; j++) {
+      var cls = code.classList[j];
+      if (cls.indexOf('language-') === 0) {
+        lang = cls.replace('language-', '');
+        break;
+      }
+    }
+    if (!lang) {
+      /* try data-lang attribute */
+      lang = pre.getAttribute('data-lang') || '';
+    }
+    if (lang) {
+      var header = document.createElement('div');
+      header.className = 'code-header';
+      header.textContent = lang;
+      block.insertBefore(header, block.firstChild);
+    }
+  }
+})();
+</script>
