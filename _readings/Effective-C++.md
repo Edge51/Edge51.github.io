@@ -1,7 +1,7 @@
 ---
 title: "Effective C++ Notes"
 collection: Learning
-permalink: /software-development/reading/effective-cpp
+permalink: /readings/reading/effective-cpp
 date: 2024-09-14
 ---
 

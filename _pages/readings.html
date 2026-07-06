@@ -1,12 +1,22 @@
 ---
 layout: archive
-title: "Software Development"
-permalink: /software-development/
+title: "Readings"
+permalink: /readings/
 author_profile: true
+redirect_from:
+  - /software-development/
 ---
 
 {% include base_path %}
 
-{% for post in site.readings reversed %}
-  {% include archive-single.html %}
+{% assign reading_groups = site.readings | group_by: "collection" | sort: "name" %}
+
+{% for group in reading_groups %}
+  {% assign group_name = group.name | default: "Uncategorized" %}
+  <h2 class="archive__subtitle">{{ group_name }}</h2>
+  <div class="archive__year-group">
+  {% for post in group.items reversed %}
+    {% include archive-single.html %}
+  {% endfor %}
+  </div>
 {% endfor %}

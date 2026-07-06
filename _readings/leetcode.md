@@ -1,7 +1,7 @@
 ---
 title: "LeetCode Notes"
 collection: Learning
-permalink: /software-development/reading/leetcode-notes
+permalink: /readings/reading/leetcode-notes
 date: 2025-12-03
 ---
 

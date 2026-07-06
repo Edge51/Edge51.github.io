@@ -1,7 +1,7 @@
 ---
 title: 'Glog Study'
 date: 2024-09-20
-permalink: /software-development/reading/glog-study
+permalink: /readings/reading/glog-study
 tags:
   - C++
   - Glog
