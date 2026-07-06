@@ -1,0 +1,45 @@
+{% include base_path %}
+
+<section class="home-hero">
+  <div class="home-hero__avatar">
+    {% if site.author.avatar contains "://" %}
+      <img src="{{ site.author.avatar }}" alt="{{ site.author.name }}">
+    {% else %}
+      <img src="{{ site.author.avatar | prepend: '/images/' | prepend: base_path }}" alt="{{ site.author.name }}">
+    {% endif %}
+  </div>
+
+  <h1 class="home-hero__name">{{ site.author.name }}</h1>
+
+  {% if site.author.bio %}
+    <p class="home-hero__bio">{{ site.author.bio }}</p>
+  {% endif %}
+
+  {% if site.author.location %}
+    <p class="home-hero__location">
+      <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+      {{ site.author.location }}
+    </p>
+  {% endif %}
+
+  <div class="home-hero__social">
+    {% if site.author.github %}
+      <a href="https://github.com/{{ site.author.github }}" title="GitHub" rel="me" class="home-hero__social-link">
+        <i class="fab fa-github"></i>
+      </a>
+    {% endif %}
+    {% if site.author.linkedin %}
+      <a href="https://linkedin.com/in/{{ site.author.linkedin }}" title="LinkedIn" rel="me" class="home-hero__social-link">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    {% endif %}
+    {% if site.author.email %}
+      <a href="mailto:{{ site.author.email }}" title="Email" class="home-hero__social-link">
+        <i class="fas fa-envelope"></i>
+      </a>
+    {% endif %}
+    <a href="{{ base_path }}/feed.xml" title="RSS" class="home-hero__social-link">
+      <i class="fas fa-rss"></i>
+    </a>
+  </div>
+</section>

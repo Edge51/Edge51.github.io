@@ -1,12 +1,16 @@
 ---
 permalink: /
-title: "Welcome to Edge’s Personal Website～"
-excerpt: "About me"
-author_profile: true
+layout: splash
+title: "Edge51"
+excerpt: "Personal site"
 redirect_from: 
   - /about/
   - /about.html
 ---
 
+{% include base_path %}
 
-This is a personal website for self-teaching records. 
+{% include home/hero.html %}
+{% include home/stats.html %}
+{% include home/featured.html %}
+{% include home/categories.html %} 

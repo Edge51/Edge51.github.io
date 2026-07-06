@@ -1,0 +1,33 @@
+{% assign post_count = site.posts | size %}
+{% assign project_count = site.portfolio | size %}
+{% assign reading_count = site.readings | size %}
+{% assign physics_count = site.physics | size %}
+
+<section class="home-stats">
+  <div class="home-stats__grid">
+    {% if post_count > 0 %}
+      <a href="{{ base_path }}/blogs/" class="home-stats__card">
+        <span class="home-stats__number">{{ post_count }}</span>
+        <span class="home-stats__label">Blog Posts</span>
+      </a>
+    {% endif %}
+    {% if project_count > 0 %}
+      <a href="{{ base_path }}/portfolio/" class="home-stats__card">
+        <span class="home-stats__number">{{ project_count }}</span>
+        <span class="home-stats__label">Projects</span>
+      </a>
+    {% endif %}
+    {% if reading_count > 0 %}
+      <a href="{{ base_path }}/readings/" class="home-stats__card">
+        <span class="home-stats__number">{{ reading_count }}</span>
+        <span class="home-stats__label">Readings</span>
+      </a>
+    {% endif %}
+    {% if physics_count > 0 %}
+      <a href="{{ base_path }}/physics/" class="home-stats__card">
+        <span class="home-stats__number">{{ physics_count }}</span>
+        <span class="home-stats__label">Physics Notes</span>
+      </a>
+    {% endif %}
+  </div>
+</section>

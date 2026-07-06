@@ -1,0 +1,16 @@
+{% include base_path %}
+
+<section class="home-categories">
+  <h2 class="home-section__title">Explore</h2>
+
+  <div class="home-categories__grid">
+    {% for link in site.data.navigation.main %}
+      {% unless link.title == "CV" %}
+        <a href="{{ base_path }}{{ link.url }}" class="home-categories__card">
+          <span class="home-categories__name">{{ link.title }}</span>
+          <span class="home-categories__arrow">→</span>
+        </a>
+      {% endunless %}
+    {% endfor %}
+  </div>
+</section>
