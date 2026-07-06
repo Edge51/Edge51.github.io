@@ -24,21 +24,34 @@
   for (var i = 0; i < codeBlocks.length; i++) {
     var block = codeBlocks[i];
     if (block.querySelector('.code-header')) continue;
-    var pre = block.querySelector('pre');
-    if (!pre) continue;
-    var code = pre.querySelector('code');
-    if (!code) continue;
+    /* Try block's own classes first (Rouge puts language-* on the outer div) */
     var lang = '';
-    for (var j = 0; j < code.classList.length; j++) {
-      var cls = code.classList[j];
+    for (var j = 0; j < block.classList.length; j++) {
+      var cls = block.classList[j];
       if (cls.indexOf('language-') === 0) {
         lang = cls.replace('language-', '');
         break;
       }
     }
     if (!lang) {
-      /* try data-lang attribute */
-      lang = pre.getAttribute('data-lang') || '';
+      /* Try pre data-lang */
+      var pre = block.querySelector('pre');
+      if (pre) {
+        lang = pre.getAttribute('data-lang') || '';
+      }
+    }
+    if (!lang) {
+      /* Try inner code classList as fallback */
+      var code = block.querySelector('code');
+      if (code) {
+        for (var j = 0; j < code.classList.length; j++) {
+          var cls = code.classList[j];
+          if (cls.indexOf('language-') === 0) {
+            lang = cls.replace('language-', '');
+            break;
+          }
+        }
+      }
     }
     if (lang) {
       var header = document.createElement('div');
