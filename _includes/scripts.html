@@ -1,3 +1,23 @@
+<script>
+(function() {
+  var theme = localStorage.getItem('theme');
+  if (!theme) {
+    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', theme);
+  var icon = document.querySelector('.theme-toggle__icon');
+  if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+
+  document.querySelector('.theme-toggle').addEventListener('click', function() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    var icon2 = document.querySelector('.theme-toggle__icon');
+    if (icon2) icon2.textContent = next === 'dark' ? '☀️' : '🌙';
+  });
+})();
+</script>
 <script src="{{ base_path }}/assets/js/main.min.js"></script>
 
 {% include analytics.html %}

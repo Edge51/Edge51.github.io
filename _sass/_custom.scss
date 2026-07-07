@@ -4,44 +4,99 @@
    ========================================================================== */
 
 /* -------- Override Theme Variables -------- */
-$primary-color          : $warm-primary;
-$link-color             : $warm-primary;
-$link-color-hover       : $warm-link-hover;
-$link-color-visited     : $warm-accent;
-$masthead-link-color    : $warm-text;
-$masthead-link-color-hover: $warm-primary;
-$text-color             : $warm-text;
-$border-color           : $warm-border;
-$body-color             : $warm-bg;
-$background-color       : $warm-bg;
-$code-background-color  : $warm-code-bg;
-$code-background-color-dark: $warm-border;
-$lighter-gray           : $warm-border-light;
-$light-gray             : $warm-border;
-$gray                   : $warm-text-light;
-$dark-gray              : $warm-text;
-$darker-gray            : $warm-heading;
+$primary-color          : var(--accent);
+$link-color             : var(--accent);
+$link-color-hover       : var(--accent-hover);
+$link-color-visited     : var(--accent-light);
+$masthead-link-color    : var(--text-primary);
+$masthead-link-color-hover: var(--accent);
+$text-color             : var(--text-primary);
+$border-color           : var(--border-default);
+$body-color             : var(--bg-primary);
+$background-color       : var(--bg-primary);
+$code-background-color  : var(--bg-code);
+$code-background-color-dark: var(--border-default);
+$lighter-gray           : var(--border-light);
+$light-gray             : var(--border-default);
+$gray                   : var(--text-light);
+$dark-gray              : var(--text-primary);
+$darker-gray            : var(--text-heading);
 $global-font-family     : $custom-body-font;
 $header-font-family     : $custom-header-font;
 $monospace              : $custom-mono-font;
-$box-shadow             : $shadow-card;
+$box-shadow             : var(--shadow-card);
 $border-radius          : 8px;
+
+/* -------- CSS Custom Properties (for runtime theme switching) -------- */
+:root {
+  --bg-primary: #{$warm-bg};
+  --bg-surface: #{$warm-surface};
+  --bg-code: #{$warm-code-bg};
+  --bg-tag: #{$warm-tag-bg};
+  --text-primary: #{$warm-text};
+  --text-light: #{$warm-text-light};
+  --text-muted: #{$warm-muted};
+  --text-heading: #{$warm-heading};
+  --border-light: #{$warm-border-light};
+  --border-default: #{$warm-border};
+  --accent: #{$warm-primary};
+  --accent-hover: #{$warm-link-hover};
+  --accent-light: #{$warm-accent};
+  --shadow-card: #{$shadow-card};
+  --shadow-card-hover: #{$shadow-card-hover};
+  --shadow-elevated: #{$shadow-elevated};
+  --masthead-bg: rgba(250, 246, 242, 0.92);
+  --rgb-accent: 201, 123, 93;
+  --rgb-bg: 250, 246, 242;
+  --rgb-heading: 92, 61, 46;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1a1817;
+  --bg-surface: #252220;
+  --bg-code: #2a2724;
+  --bg-tag: #332e2a;
+  --text-primary: #d8d0c8;
+  --text-light: #a09890;
+  --text-muted: #787068;
+  --text-heading: #e8e0d8;
+  --border-light: #332e2a;
+  --border-default: #403a35;
+  --accent: #d4946a;
+  --accent-hover: #e0a880;
+  --accent-light: #b88460;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-card-hover: 0 8px 25px rgba(0,0,0,0.4);
+  --shadow-elevated: 0 4px 16px rgba(0,0,0,0.35);
+  --masthead-bg: rgba(26, 24, 23, 0.95);
+  --rgb-accent: 212, 148, 106;
+  --rgb-bg: 26, 24, 23;
+  --rgb-heading: 232, 224, 216;
+}
+
+[data-theme="dark"] img {
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+[data-theme="dark"] img:hover {
+  opacity: 1;
+}
 
 /* -------- Global Background -------- */
 html {
-  background-color: $warm-bg;
+  background-color: var(--bg-primary);
 }
 
 body {
-  background-color: $warm-bg;
-  color: $warm-text;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 /* -------- Typography Tweaks -------- */
 .page__content {
   font-size: 1.05em;
   line-height: 1.8;
-  color: $warm-text;
+  color: var(--text-primary);
 
   p {
     margin-bottom: 1.5em;
@@ -50,31 +105,31 @@ body {
   h2 {
     margin-top: 2.2em;
     padding-bottom: 0.4em;
-    border-bottom: 2px solid $warm-border-light;
-    color: $warm-heading;
+    border-bottom: 2px solid var(--border-light);
+    color: var(--text-heading);
     font-weight: 700;
     letter-spacing: -0.02em;
   }
 
   h3 {
     margin-top: 1.8em;
-    color: $warm-heading;
+    color: var(--text-heading);
     font-weight: 600;
   }
 
   a {
-    color: $warm-primary;
+    color: var(--accent);
     text-decoration: none;
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s ease, color 0.2s ease;
 
     &:hover {
-      color: $warm-link-hover;
-      border-bottom-color: $warm-link-hover;
+      color: var(--accent-hover);
+      border-bottom-color: var(--accent-hover);
     }
 
     &:visited {
-      color: $warm-accent;
+      color: var(--accent-light);
     }
 
     /* Don't underline images or buttons */
@@ -85,10 +140,10 @@ body {
   blockquote {
     margin: 2em 0;
     padding: 1em 1.5em;
-    border-left: 4px solid $warm-primary;
-    background: lighten($warm-primary, 34%);
+    border-left: 4px solid var(--accent);
+    background: #f5ede8;
     border-radius: 0 $border-radius-soft $border-radius-soft 0;
-    color: $warm-text;
+    color: var(--text-primary);
     font-style: normal;
 
     p {
@@ -101,7 +156,7 @@ body {
 
     cite {
       font-style: italic;
-      color: $warm-text-light;
+      color: var(--text-light);
     }
   }
 
@@ -111,21 +166,21 @@ body {
   td > code {
     padding: 0.15em 0.4em;
     font-size: 0.9em;
-    color: $warm-heading;
-    background: $warm-code-bg;
-    border: 1px solid $warm-border-light;
+    color: var(--text-heading);
+    background: var(--bg-code);
+    border: 1px solid var(--border-light);
     border-radius: 6px;
   }
 
   /* Images */
   img {
     border-radius: $border-radius-soft;
-    box-shadow: $shadow-card;
+    box-shadow: var(--shadow-card);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     &:hover {
       transform: scale(1.01);
-      box-shadow: $shadow-card-hover;
+      box-shadow: var(--shadow-card-hover);
     }
   }
 
@@ -134,29 +189,29 @@ body {
     margin: 2.5em 0;
     border: none;
     height: 1px;
-    background: linear-gradient(to right, transparent, $warm-border, transparent);
+    background: linear-gradient(to right, transparent, var(--border-default), transparent);
   }
 }
 
 /* -------- Headings -------- */
 h1, h2, h3, h4, h5, h6 {
-  color: $warm-heading;
+  color: var(--text-heading);
   letter-spacing: -0.02em;
 }
 
 .page__title {
-  color: $warm-heading;
+  color: var(--text-heading);
   font-weight: 800;
   letter-spacing: -0.03em;
 }
 
 /* -------- Links (global) -------- */
 a {
-  color: $warm-primary;
+  color: var(--accent);
   transition: color 0.2s ease;
 
   &:hover {
-    color: $warm-link-hover;
+    color: var(--accent-hover);
   }
 }
 
@@ -167,15 +222,15 @@ html {
 
 /* -------- Selection -------- */
 ::selection {
-  background: rgba($warm-primary, 0.2);
-  color: $warm-heading;
+  background: rgba(var(--rgb-accent), 0.2);
+  color: var(--text-heading);
 }
 
 /* -------- Code Blocks (highlighted) -------- */
 .highlight {
   border-radius: $border-radius-soft;
-  background: $warm-code-bg;
-  border: 1px solid $warm-border-light;
+  background: var(--bg-code);
+  border: 1px solid var(--border-light);
 
   pre {
     margin: 0;
@@ -189,7 +244,7 @@ div.highlighter-rouge {
   margin: 1.5em 0;
   border-radius: $border-radius-soft;
   overflow: hidden;
-  border: 1px solid $warm-border-light;
+  border: 1px solid var(--border-light);
 }
 
 /* -------- Tables -------- */
@@ -200,22 +255,22 @@ table {
 
   th, td {
     padding: 0.6em 1em;
-    border: 1px solid $warm-border-light;
+    border: 1px solid var(--border-light);
     text-align: left;
   }
 
   th {
-    background: $warm-code-bg;
-    color: $warm-heading;
+    background: var(--bg-code);
+    color: var(--text-heading);
     font-weight: 600;
   }
 
   tr:nth-child(even) {
-    background: rgba($warm-bg, 0.5);
+    background: rgba(var(--rgb-bg), 0.5);
   }
 
   tr:hover {
-    background: rgba($warm-primary, 0.04);
+    background: rgba(var(--rgb-accent), 0.04);
   }
 }
 
@@ -226,25 +281,25 @@ table {
 }
 
 .btn--primary {
-  background: $warm-primary;
-  border-color: $warm-primary;
+  background: var(--accent);
+  border-color: var(--accent);
 
   &:hover {
-    background: $warm-link-hover;
-    border-color: $warm-link-hover;
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
   }
 }
 
 /* -------- Notice Blocks -------- */
 .notice {
   border-radius: $border-radius-soft;
-  border-left: 4px solid $warm-primary;
+  border-left: 4px solid var(--accent);
 }
 
 .notice--primary {
-  border-color: $warm-primary;
-  background: lighten($warm-primary, 34%);
-  color: $warm-text;
+  border-color: var(--accent);
+  background: #f5ede8;
+  color: var(--text-primary);
 }
 
 .notice--info {
@@ -252,7 +307,7 @@ table {
 }
 
 .notice--warning {
-  border-color: $warm-accent;
+  border-color: var(--accent-light);
 }
 
 .notice--danger {
@@ -270,19 +325,19 @@ table {
   }
 
   a.current, span.current {
-    background: $warm-primary !important;
-    border-color: $warm-primary !important;
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
   }
 }
 
 /* -------- Misc -------- */
 .page__hero--overlay {
-  background-color: rgba($warm-heading, 0.85) !important;
+  background-color: rgba(var(--rgb-heading), 0.85) !important;
 }
 
 .page__lead {
   font-family: $custom-body-font;
-  color: $warm-text-light;
+  color: var(--text-light);
 }
 
 /* Responsive image helper */
@@ -296,23 +351,23 @@ table {
   padding: 0.15em 0.6em;
   font-size: 0.75em;
   font-weight: 500;
-  color: $warm-primary;
-  background: $warm-tag-bg;
+  color: var(--accent);
+  background: var(--bg-tag);
   border-radius: $border-radius-pill;
   transition: all 0.2s ease;
 
   &:hover {
     color: #fff;
-    background: $warm-primary;
+    background: var(--accent);
   }
 }
 
 /* -------- Masthead / Navigation -------- */
 .masthead {
-  background: rgba($warm-bg, 0.92);
+  background: var(--masthead-bg);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-bottom-color: $warm-border-light;
+  border-bottom-color: var(--border-light);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -332,20 +387,20 @@ table {
       font-size: 1.15em;
       font-weight: 700;
       letter-spacing: -0.02em;
-      color: $warm-heading;
+      color: var(--text-heading);
 
       a {
-        color: $warm-heading !important;
+        color: var(--text-heading) !important;
         transition: color 0.2s ease;
 
         &:hover {
-          color: $warm-primary !important;
+          color: var(--accent) !important;
         }
       }
     }
 
     a {
-      color: $warm-text;
+      color: var(--text-primary);
       position: relative;
       transition: color 0.2s ease;
       padding-bottom: 2px;
@@ -357,13 +412,13 @@ table {
         left: 0;
         width: 0;
         height: 2px;
-        background: $warm-primary;
+        background: var(--accent);
         transition: width 0.25s ease;
         border-radius: 1px;
       }
 
       &:hover {
-        color: $warm-primary;
+        color: var(--accent);
 
         &::after {
           width: 100%;
@@ -384,30 +439,30 @@ table {
   }
 
   .hidden-links {
-    background: $warm-bg;
-    border: 1px solid $warm-border-light;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
     border-radius: $border-radius-soft;
-    box-shadow: $shadow-elevated;
+    box-shadow: var(--shadow-elevated);
 
     a {
-      color: $warm-text;
+      color: var(--text-primary);
       padding: 0.5em 1.2em;
 
       &:hover {
-        color: $warm-primary;
-        background: $warm-tag-bg;
+        color: var(--accent);
+        background: var(--bg-tag);
       }
     }
   }
 
   button {
-    color: $warm-text;
+    color: var(--text-primary);
     padding: 0.5em;
 
     .navicon {
       &::before,
       &::after {
-        background: $warm-text;
+        background: var(--text-primary);
       }
     }
   }
@@ -415,9 +470,9 @@ table {
 
 /* -------- Footer -------- */
 .page__footer {
-  background: linear-gradient(to top, $warm-bg, transparent);
-  border-top: 1px solid $warm-border-light;
-  color: $warm-text-light;
+  background: linear-gradient(to top, var(--bg-primary), transparent);
+  border-top: 1px solid var(--border-light);
+  color: var(--text-light);
 
   footer {
     margin-top: 1em;
@@ -426,11 +481,11 @@ table {
   }
 
   a {
-    color: $warm-text-light;
+    color: var(--text-light);
     transition: color 0.2s ease;
 
     &:hover {
-      color: $warm-primary;
+      color: var(--accent);
       text-decoration: none;
     }
   }
@@ -454,7 +509,7 @@ table {
 }
 
 .page__footer-sep {
-  color: $warm-border;
+  color: var(--border-default);
 }
 
 .page__footer-social {
@@ -469,13 +524,13 @@ table {
     width: 2em;
     height: 2em;
     border-radius: 50%;
-    color: $warm-text-light;
+    color: var(--text-light);
     font-size: 1.1em;
     transition: all 0.2s ease;
 
     &:hover {
-      color: $warm-primary;
-      background: $warm-tag-bg;
+      color: var(--accent);
+      background: var(--bg-tag);
       transform: translateY(-1px);
     }
   }
@@ -498,10 +553,10 @@ table {
     font-family: $custom-header-font;
     font-size: 1.3em;
     font-weight: 700;
-    color: $warm-heading;
+    color: var(--text-heading);
     margin: 0 0 0.8em;
     padding-bottom: 0.3em;
-    border-bottom: 2px solid $warm-border-light;
+    border-bottom: 2px solid var(--border-light);
     letter-spacing: -0.02em;
   }
 }
@@ -516,14 +571,14 @@ table {
 
   &__item {
     padding: 1em 1.2em;
-    background: $warm-surface;
-    border: 1px solid $warm-border-light;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
     border-radius: $border-radius-soft;
-    box-shadow: $shadow-card;
+    box-shadow: var(--shadow-card);
     transition: box-shadow 0.2s ease;
 
     &:hover {
-      box-shadow: $shadow-card-hover;
+      box-shadow: var(--shadow-card-hover);
     }
   }
 
@@ -531,14 +586,14 @@ table {
     display: block;
     font-size: 1.05em;
     font-weight: 700;
-    color: $warm-heading;
+    color: var(--text-heading);
     margin-bottom: 0.2em;
   }
 
   &__meta {
     display: block;
     font-size: 0.85em;
-    color: $warm-text-light;
+    color: var(--text-light);
     margin-bottom: 0.6em;
   }
 }
@@ -553,7 +608,7 @@ table {
 
   li {
     font-size: 0.88em;
-    color: $warm-text;
+    color: var(--text-primary);
     line-height: 1.5;
   }
 }
@@ -569,15 +624,15 @@ table {
   padding: 0.25em 0.7em;
   font-size: 0.82em;
   font-weight: 500;
-  color: $warm-primary;
-  background: $warm-tag-bg;
+  color: var(--accent);
+  background: var(--bg-tag);
   border-radius: $border-radius-pill;
   line-height: 1.5;
   transition: all 0.2s ease;
 
   &:hover {
     color: #fff;
-    background: $warm-primary;
+    background: var(--accent);
   }
 }
 
@@ -594,9 +649,9 @@ figure.highlight::before {
   padding: 0.3em 1em;
   font-size: 0.75em;
   font-weight: 600;
-  color: $warm-text-light;
-  background: darken($warm-code-bg, 2%);
-  border-bottom: 1px solid $warm-border-light;
+  color: var(--text-light);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-light);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -608,7 +663,7 @@ figure.highlight::before {
   left: 0;
   width: 0%;
   height: 3px;
-  background: linear-gradient(90deg, $warm-primary, $warm-accent);
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
   z-index: 9999;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -624,18 +679,18 @@ figure.highlight::before {
 .portfolio__card {
   display: flex;
   flex-direction: column;
-  background: $warm-surface;
-  border: 1px solid $warm-border-light;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
   border-radius: $border-radius-soft;
   overflow: hidden;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: $shadow-card;
+  box-shadow: var(--shadow-card);
   height: 100%;
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: $shadow-card-hover;
-    border-color: $warm-primary;
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--accent);
 
     .portfolio__image img {
       transform: scale(1.03);
@@ -645,7 +700,7 @@ figure.highlight::before {
 
 .portfolio__image {
   overflow: hidden;
-  background: $warm-code-bg;
+  background: var(--bg-code);
 
   img {
     display: block;
@@ -670,13 +725,13 @@ figure.highlight::before {
   line-height: 1.35;
 
   a {
-    color: $warm-heading;
+    color: var(--text-heading);
     text-decoration: none !important;
     border-bottom: none !important;
     transition: color 0.2s ease;
 
     &:hover {
-      color: $warm-primary;
+      color: var(--accent);
     }
   }
 }
@@ -684,7 +739,7 @@ figure.highlight::before {
 .portfolio__excerpt {
   margin: 0 0 1em;
   font-size: 0.85em;
-  color: $warm-text-light;
+  color: var(--text-light);
   line-height: 1.5;
   flex: 1;
 }
@@ -708,8 +763,8 @@ figure.highlight::before {
   padding: 0.15em 0.55em;
   font-size: 0.72em;
   font-weight: 500;
-  color: $warm-primary;
-  background: $warm-tag-bg;
+  color: var(--accent);
+  background: var(--bg-tag);
   border-radius: $border-radius-pill;
   line-height: 1.5;
 }
@@ -721,7 +776,7 @@ figure.highlight::before {
   margin-left: auto;
   font-size: 0.78em;
   font-weight: 500;
-  color: $warm-text-light;
+  color: var(--text-light);
   text-decoration: none !important;
   border-bottom: none !important;
   transition: color 0.2s ease;
@@ -731,7 +786,7 @@ figure.highlight::before {
   }
 
   &:hover {
-    color: $warm-primary;
+    color: var(--accent);
   }
 }
 
@@ -744,43 +799,43 @@ figure.highlight::before {
 
 /* -------- Archive / Blog List -------- */
 .list__item .archive__item {
-  background: $warm-surface;
-  border-color: $warm-border-light;
+  background: var(--bg-surface);
+  border-color: var(--border-light);
 
   &::before {
-    background: $warm-primary;
+    background: var(--accent);
   }
 
   &:hover {
-    border-color: $warm-primary;
+    border-color: var(--accent);
   }
 
   .archive__item-title {
     font-family: $custom-header-font;
-    color: $warm-heading;
+    color: var(--text-heading);
 
     a {
-      color: $warm-heading;
+      color: var(--text-heading);
 
       &:hover {
-        color: $warm-primary;
+        color: var(--accent);
       }
     }
   }
 
   .archive__item-excerpt {
-    color: $warm-text;
+    color: var(--text-primary);
     font-size: 0.9em;
     line-height: 1.6;
   }
 
 .archive__item-tag {
-      color: $warm-primary;
-      background: $warm-tag-bg;
+      color: var(--accent);
+      background: var(--bg-tag);
 
       &:hover {
         color: #fff;
-        background: $warm-primary;
+        background: var(--accent);
       }
     }
 
@@ -814,26 +869,26 @@ figure.highlight::before {
 
   .archive__item-date,
   .archive__item-readtime {
-    color: $warm-text-light;
+    color: var(--text-light);
 
     i {
-      color: $warm-muted;
+      color: var(--text-muted);
     }
   }
 }
 
 .archive__subtitle {
-  color: $warm-heading;
+  color: var(--text-heading);
   font-family: $custom-header-font;
 
   &::after {
-    background: linear-gradient(90deg, $warm-border 0%, transparent 100%);
+    background: linear-gradient(90deg, var(--border-default) 0%, transparent 100%);
   }
 }
 
 .archive__subtitle-count {
-  color: $warm-text-light;
-  background: $warm-tag-bg;
+  color: var(--text-light);
+  background: var(--bg-tag);
 }
 
 /* ==========================================================================
@@ -858,7 +913,7 @@ figure.highlight::before {
       height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid $warm-border-light;
+      border: 4px solid var(--border-light);
       box-shadow: 0 4px 20px rgba(92, 61, 46, 0.12);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -873,14 +928,14 @@ figure.highlight::before {
     font-family: $custom-header-font;
     font-size: 2em;
     font-weight: 900;
-    color: $warm-heading;
+    color: var(--text-heading);
     margin: 0 0 0.4em;
     letter-spacing: -0.03em;
   }
 
   &__bio {
     font-size: 1.1em;
-    color: $warm-text-light;
+    color: var(--text-light);
     max-width: 480px;
     margin: 0 0 0.8em;
     line-height: 1.6;
@@ -889,7 +944,7 @@ figure.highlight::before {
 
   &__location {
     font-size: 0.85em;
-    color: $warm-muted;
+    color: var(--text-muted);
     margin: 0 0 1.2em;
 
     i {
@@ -910,15 +965,15 @@ figure.highlight::before {
     width: 2.4em;
     height: 2.4em;
     border-radius: 50%;
-    color: $warm-text-light;
+    color: var(--text-light);
     font-size: 1.2em;
     transition: all 0.25s ease;
     text-decoration: none !important;
     border-bottom: none !important;
 
     &:hover {
-      color: $warm-primary;
-      background: $warm-tag-bg;
+      color: var(--accent);
+      background: var(--bg-tag);
       transform: translateY(-2px);
     }
   }
@@ -942,19 +997,19 @@ figure.highlight::before {
     align-items: center;
     gap: 0.3em;
     padding: 1.2em 0.8em;
-    background: $warm-surface;
-    border: 1px solid $warm-border-light;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
     border-radius: $border-radius-soft;
     text-decoration: none !important;
     border-bottom: none !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: $shadow-card;
+    box-shadow: var(--shadow-card);
     cursor: pointer;
 
     &:hover {
       transform: translateY(-3px);
-      box-shadow: $shadow-card-hover;
-      border-color: $warm-primary;
+      box-shadow: var(--shadow-card-hover);
+      border-color: var(--accent);
     }
   }
 
@@ -962,13 +1017,13 @@ figure.highlight::before {
     font-family: $custom-header-font;
     font-size: 1.8em;
     font-weight: 900;
-    color: $warm-primary;
+    color: var(--accent);
     line-height: 1;
   }
 
   &__label {
     font-size: 0.8em;
-    color: $warm-text-light;
+    color: var(--text-light);
     font-weight: 500;
     line-height: 1.3;
     text-align: center;
@@ -980,7 +1035,7 @@ figure.highlight::before {
   font-family: $custom-header-font;
   font-size: 1.4em;
   font-weight: 700;
-  color: $warm-heading;
+  color: var(--text-heading);
   text-align: center;
   margin: 0 0 1em;
   letter-spacing: -0.02em;
@@ -990,7 +1045,7 @@ figure.highlight::before {
     display: block;
     width: 40px;
     height: 3px;
-    background: $warm-primary;
+    background: var(--accent);
     margin: 0.5em auto 0;
     border-radius: 2px;
   }
@@ -1010,19 +1065,19 @@ figure.highlight::before {
 
   &__card {
     padding: 1.2em 1.4em;
-    background: $warm-surface;
-    border: 1px solid $warm-border-light;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
     border-radius: $border-radius-soft;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: $shadow-card;
+    box-shadow: var(--shadow-card);
 
     &:hover {
       transform: translateX(4px);
-      box-shadow: $shadow-card-hover;
-      border-color: $warm-border;
+      box-shadow: var(--shadow-card-hover);
+      border-color: var(--border-default);
 
       .home-featured__title a {
-        color: $warm-primary;
+        color: var(--accent);
       }
     }
   }
@@ -1033,7 +1088,7 @@ figure.highlight::before {
     gap: 0.6em;
     margin-bottom: 0.4em;
     font-size: 0.78em;
-    color: $warm-muted;
+    color: var(--text-muted);
   }
 
   &__tag {
@@ -1041,8 +1096,8 @@ figure.highlight::before {
     padding: 0.1em 0.5em;
     font-size: 0.85em;
     font-weight: 500;
-    color: $warm-primary;
-    background: $warm-tag-bg;
+    color: var(--accent);
+    background: var(--bg-tag);
     border-radius: $border-radius-pill;
   }
 
@@ -1053,7 +1108,7 @@ figure.highlight::before {
     line-height: 1.4;
 
     a {
-      color: $warm-heading;
+      color: var(--text-heading);
       text-decoration: none !important;
       border-bottom: none !important;
       transition: color 0.2s ease;
@@ -1063,7 +1118,7 @@ figure.highlight::before {
   &__excerpt {
     margin: 0;
     font-size: 0.85em;
-    color: $warm-text-light;
+    color: var(--text-light);
     line-height: 1.5;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -1078,7 +1133,7 @@ figure.highlight::before {
 
   &__empty {
     text-align: center;
-    color: $warm-text-light;
+    color: var(--text-light);
     font-size: 0.9em;
   }
 }
@@ -1092,7 +1147,7 @@ figure.highlight::before {
 
   &__content {
     font-size: 0.95em;
-    color: $warm-text;
+    color: var(--text-primary);
     line-height: 1.7;
 
     p {
@@ -1122,22 +1177,22 @@ figure.highlight::before {
     align-items: center;
     justify-content: space-between;
     padding: 0.9em 1.2em;
-    background: $warm-surface;
-    border: 1px solid $warm-border-light;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
     border-radius: $border-radius-soft;
     text-decoration: none !important;
     border-bottom: none !important;
     transition: all 0.25s ease;
-    box-shadow: $shadow-card;
+    box-shadow: var(--shadow-card);
 
     &:hover {
-      border-color: $warm-primary;
+      border-color: var(--accent);
       transform: translateY(-2px);
-      box-shadow: $shadow-card-hover;
+      box-shadow: var(--shadow-card-hover);
 
       .home-categories__arrow {
         transform: translateX(3px);
-        color: $warm-primary;
+        color: var(--accent);
       }
     }
   }
@@ -1145,12 +1200,227 @@ figure.highlight::before {
   &__name {
     font-size: 0.9em;
     font-weight: 600;
-    color: $warm-heading;
+    color: var(--text-heading);
   }
 
   &__arrow {
     font-size: 0.9em;
-    color: $warm-muted;
+    color: var(--text-muted);
     transition: transform 0.2s ease, color 0.2s ease;
+  }
+}
+
+/* -------- Theme Toggle Button -------- */
+/* Lay out nav + toggle side by side */
+.masthead__menu {
+  display: flex;
+  align-items: center;
+}
+
+.masthead__menu .greedy-nav {
+  flex: 1;
+  min-width: 0;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2em;
+  height: 2.2em;
+  padding: 0;
+  margin-left: 0.3em;
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--bg-tag);
+    border-color: var(--border-default);
+  }
+
+  &__icon {
+    font-size: 1em;
+    line-height: 1;
+  }
+}
+
+/* ==========================================================================
+   DARK MODE — override theme core colors
+   ========================================================================== */
+[data-theme="dark"] {
+  /* ---- Masthead / Nav ---- */
+  .masthead {
+    border-bottom-color: var(--border-default);
+  }
+  .greedy-nav {
+    background: var(--bg-primary);
+    a, button { color: var(--text-primary); }
+    button { background: var(--accent); color: #fff; }
+  }
+  .greedy-nav .hidden-links {
+    background: var(--bg-surface);
+    border-color: var(--border-default);
+    li { border-top-color: var(--border-light); }
+    a { color: var(--text-primary); }
+    a:hover { color: var(--accent); }
+  }
+  .greedy-nav .hidden-links:before {
+    border-color: var(--border-default) transparent;
+  }
+  .nav__sub-title {
+    border-color: var(--border-light);
+  }
+
+  /* ---- Sidebar / TOC ---- */
+  .toc {
+    background: var(--bg-surface);
+    border-color: var(--border-light);
+    .nav__title { color: var(--text-heading); }
+  }
+  .toc__menu a {
+    border-color: var(--border-light);
+    color: var(--text-light);
+  }
+  .toc__menu a:hover {
+    border-color: var(--border-default);
+    color: var(--text-primary);
+  }
+  .author__urls {
+    border-color: var(--border-light);
+  }
+  .author__urls:before {
+    background: var(--bg-surface);
+    border-color: var(--border-light);
+  }
+  .nav__list .active {
+    color: var(--accent);
+  }
+
+  /* ---- Page Content ---- */
+  .page__content h2 {
+    border-bottom-color: var(--border-light);
+  }
+  .page__share {
+    border-color: var(--border-light);
+  }
+  .page__comments-title,
+  .page__comments-form {
+    border-color: var(--border-light);
+  }
+  .page__comments + .pagination {
+    border-color: var(--border-light);
+  }
+  .page__related {
+    border-color: var(--border-light);
+  }
+  .page__footer {
+    border-top-color: var(--border-default);
+    background: var(--bg-surface);
+  }
+
+  /* ---- Archive / Listing ---- */
+  .archive__subtitle::after {
+    border-color: var(--border-light);
+  }
+  .archive__subtitle-count {
+    background: var(--bg-tag);
+    color: var(--text-light);
+  }
+  .list__item .archive__item {
+    border-color: var(--border-light);
+  }
+  .list__item .archive__item::before {
+    color: var(--accent);
+  }
+  .archive__item-tag:hover {
+    color: var(--accent-hover);
+  }
+  .archive__item-title a:hover {
+    color: var(--accent-hover);
+  }
+  .feature__wrapper {
+    border-color: var(--border-light);
+  }
+
+  /* ---- Tables ---- */
+  table { border-color: var(--border-default); }
+  thead {
+    background: var(--bg-surface);
+    border-bottom-color: var(--border-default);
+    th { border-right-color: var(--border-default); }
+  }
+  td {
+    border-bottom-color: var(--border-default);
+    border-right-color: var(--border-default);
+  }
+  tbody tr:nth-child(even) {
+    background: rgba(var(--rgb-bg), 0.5);
+  }
+
+  /* ---- Code Blocks ---- */
+  div.highlighter-rouge,
+  figure.highlight {
+    background: var(--bg-code) !important;
+    border-color: var(--border-default);
+  }
+  div.highlighter-rouge:before,
+  figure.highlight:before {
+    background: var(--bg-surface);
+    border-bottom-color: var(--border-light);
+  }
+
+  /* ---- Horizontal Rules ---- */
+  hr { border-top-color: var(--border-default); }
+
+  /* ---- Modal ---- */
+  .modal {
+    background: var(--bg-primary);
+    border-color: var(--border-default);
+  }
+  .modal__actions {
+    border-top-color: var(--border-light);
+  }
+
+  /* ---- Comments ---- */
+  .comment:not(:last-child) {
+    border-color: var(--border-light);
+  }
+
+  /* ---- Links & Text ---- */
+  a.reversefootnote { color: var(--text-muted); }
+
+  /* ---- Buttons ---- */
+  .btn--inverse {
+    color: var(--text-light) !important;
+    border-color: var(--border-default);
+  }
+  .btn--inverse:hover {
+    color: var(--text-primary) !important;
+    border-color: var(--text-light);
+  }
+  .pagination li a.current {
+    color: var(--accent);
+  }
+
+  /* ---- Forms ---- */
+  form legend { color: var(--text-heading); }
+  label { color: var(--text-primary); }
+  textarea:focus { color: var(--text-primary); }
+
+  /* ---- Inline code (theme default) ---- */
+  td > code {
+    background: var(--bg-code);
+    border-color: var(--border-light);
+  }
+
+  /* ---- Notice blocks ---- */
+  .notice--primary {
+    border-color: var(--accent);
+    a { color: var(--accent); }
+    a:hover { color: var(--accent-hover); }
   }
 }
