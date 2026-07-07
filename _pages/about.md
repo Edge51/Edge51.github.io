@@ -14,7 +14,7 @@ classes: wide
 <section class="about-section">
   <div class="about-intro">
     <div class="about-intro__avatar">
-      <img src="{{ base_path }}/images/eevee-avatar.png" alt="Edge51">
+      <img src="{{ base_path }}/images/eevee-avatar.png" alt="Edge51" loading="lazy">
     </div>
     <div class="about-intro__text">
       <h1>Edge51</h1>
