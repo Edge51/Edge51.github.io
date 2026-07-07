@@ -1,0 +1,16 @@
+---
+layout: archive
+title: "Notes"
+permalink: /notes/
+author_profile: true
+---
+
+{% include base_path %}
+
+{% if site.notes.size > 0 %}
+  {% for post in site.notes reversed %}
+    {% include archive-single.html %}
+  {% endfor %}
+{% else %}
+  <p style="text-align:center;color:var(--text-muted);padding:3em 0;">Notes coming soon...</p>
+{% endif %}

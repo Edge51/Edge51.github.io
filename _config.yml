@@ -163,6 +163,9 @@ collections:
   physics:
     output: true
     permalink: /:collection/:path/
+  notes:
+    output: true
+    permalink: /:collection/:path/
 
 
 # Defaults
@@ -212,6 +215,16 @@ defaults:
       author_profile: true
       share: true
       comment: true
+  # _notes
+  - scope:
+      path: ""
+      type: notes
+    values:
+      layout: single
+      author_profile: true
+      toc: true
+      toc_sticky: true
+      toc_label: "Contents"
   # _talks
   - scope:
       path: ""
