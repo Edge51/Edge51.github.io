@@ -9,14 +9,36 @@ redirect_from:
 
 {% include base_path %}
 
-{% assign reading_groups = site.readings | group_by: "collection" | sort: "name" %}
+{% assign items = site.readings | sort: "date" | reverse %}
 
-{% for group in reading_groups %}
-  {% assign group_name = group.name | default: "Uncategorized" %}
-  <h2 class="archive__subtitle">{{ group_name }}</h2>
-  <div class="archive__year-group">
-{% for post in group.items reversed %}
-    {% include archive-single-reading.html %}
+{% assign labels = "Reading,Read,Want to Read,Uncategorized" | split: "," %}
+{% for label in labels %}
+  {% assign count = 0 %}
+  {% for p in items %}
+    {% if label == "Uncategorized" %}
+      {% if p.status == nil or p.status == "" %}
+        {% assign count = count | plus: 1 %}
+      {% endif %}
+    {% else %}
+      {% if p.status == label %}
+        {% assign count = count | plus: 1 %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if count > 0 %}
+    <h2 class="archive__subtitle">{{ label }}</h2>
+    <div class="readings-grid">
+    {% for post in items %}
+      {% if label == "Uncategorized" %}
+        {% if post.status == nil or post.status == "" %}
+          {% include archive-single-reading.html %}
+        {% endif %}
+      {% else %}
+        {% if post.status == label %}
+          {% include archive-single-reading.html %}
+        {% endif %}
+      {% endif %}
     {% endfor %}
-  </div>
+    </div>
+  {% endif %}
 {% endfor %}

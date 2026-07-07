@@ -3,6 +3,8 @@ title: "Effective C++ Notes"
 collection: Learning
 permalink: /readings/reading/effective-cpp
 date: 2024-09-14
+status: Read
+rating: 4
 ---
 
 # Reading notes of *Effective C++*
