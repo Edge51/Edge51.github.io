@@ -1,0 +1,38 @@
+[
+{% for post in site.posts %}
+  {
+    "title": "{{ post.title | escape }}",
+    "url": "{{ post.url | absolute_url }}",
+    "excerpt": "{{ post.excerpt | strip_html | strip_newlines | escape | truncate: 200 }}",
+    "date": "{{ post.date | date: '%Y-%m-%d' }}",
+    "tags": "{% if post.tags %}{{ post.tags | join: ', ' }}{% endif %}"
+  }{% unless forloop.last %},{% endunless %}
+{% endfor %}
+{% for note in site.notes %}
+  ,{
+    "title": "{{ note.title | escape }}",
+    "url": "{{ note.url | absolute_url }}",
+    "excerpt": "{{ note.excerpt | strip_html | strip_newlines | escape | truncate: 200 }}",
+    "date": "{{ note.date | date: '%Y-%m-%d' }}",
+    "tags": "{% if note.tags %}{{ note.tags | join: ', ' }}{% endif %}"
+  }
+{% endfor %}
+{% for reading in site.readings %}
+  ,{
+    "title": "{{ reading.title | escape }}",
+    "url": "{{ reading.url | absolute_url }}",
+    "excerpt": "{{ reading.excerpt | strip_html | strip_newlines | escape | truncate: 200 }}",
+    "date": "{{ reading.date | date: '%Y-%m-%d' }}",
+    "tags": "{% if reading.tags %}{{ reading.tags | join: ', ' }}{% endif %}"
+  }
+{% endfor %}
+{% for project in site.portfolio %}
+  ,{
+    "title": "{{ project.title | escape }}",
+    "url": "{{ project.url | absolute_url }}",
+    "excerpt": "{{ project.excerpt | strip_html | strip_newlines | escape | truncate: 200 }}",
+    "date": "{{ project.date | date: '%Y-%m-%d' }}",
+    "tags": "{% if project.tags %}{{ project.tags | join: ', ' }}{% endif %}"
+  }
+{% endfor %}
+]

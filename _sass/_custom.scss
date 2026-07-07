@@ -790,6 +790,116 @@ figure.highlight::before {
   }
 }
 
+/* -------- Search Page -------- */
+.search-page {
+  max-width: 680px;
+  margin: 2em auto;
+}
+
+.search-field {
+  position: relative;
+  margin-bottom: 2em;
+
+  input {
+    width: 100%;
+    padding: 0.8em 1em 0.8em 3em;
+    font-size: 1.1em;
+    border: 2px solid var(--border-light);
+    border-radius: 12px;
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-color: var(--accent);
+    }
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    left: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1em;
+    pointer-events: none;
+  }
+}
+
+.search-init-message {
+  text-align: center;
+  padding: 3em 1em;
+  color: var(--text-muted);
+  font-size: 0.95em;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.search-result {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 1em 1.3em;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-card);
+    border-color: var(--border-default);
+  }
+
+  &__title {
+    margin: 0 0 0.3em;
+    font-size: 1.05em;
+    font-weight: 700;
+
+    a {
+      color: var(--text-heading);
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover { color: var(--accent); }
+    }
+  }
+
+  &__excerpt {
+    margin: 0 0 0.4em;
+    font-size: 0.85em;
+    color: var(--text-light);
+    line-height: 1.5;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6em;
+    font-size: 0.78em;
+    color: var(--text-muted);
+
+    time { color: var(--text-muted); }
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em;
+  }
+}
+
+.search-no-results {
+  text-align: center;
+  padding: 3em 1em;
+  color: var(--text-muted);
+}
+
 /* -------- Reading Cards -------- */
 .readings-grid {
   display: grid;
@@ -1785,6 +1895,10 @@ figure.highlight::before {
   }
 
   .reading-card__inner:hover {
+    box-shadow: 0 1px 6px rgba(0,0,0,0.3);
+  }
+
+  .search-result:hover {
     box-shadow: 0 1px 6px rgba(0,0,0,0.3);
   }
 }
