@@ -20,5 +20,39 @@
 </script>
 <script src="{{ base_path }}/assets/js/main.min.js" defer></script>
 
+<!-- Mermaid diagram renderer -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" defer></script>
+<script defer>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('pre code.language-mermaid').forEach(function(block) {
+      var pre = block.parentElement;
+      var div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = block.textContent;
+      pre.parentElement.replaceChild(div, pre);
+    });
+    if (document.querySelector('.mermaid')) {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'base',
+        maxTextSize: 99999,
+        flowchart: { useMaxWidth: true, htmlLabels: true, padding: 20 }
+      });
+      mermaid.run({ nodes: document.querySelectorAll('.mermaid') });
+
+      // 双击放大/还原 Mermaid 图
+      document.querySelectorAll('.mermaid').forEach(function(el) {
+        el.addEventListener('dblclick', function() {
+          if (this.classList.contains('mermaid-zoomed')) {
+            this.classList.remove('mermaid-zoomed');
+          } else {
+            this.classList.add('mermaid-zoomed');
+          }
+        });
+      });
+    }
+  });
+</script>
+
 {% include analytics.html %}
 {% include /comments-providers/scripts.html %}

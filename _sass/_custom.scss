@@ -74,6 +74,54 @@ $border-radius          : 8px;
   --rgb-heading: 232, 224, 216;
 }
 
+/* -------- Code Font Size -------- */
+/* 代码块字体调大，默认 11px 太小 */
+.highlight {
+  font-size: 0.875em !important;  /* ~14px */
+}
+
+code {
+  font-size: 0.8125em;  /* ~13px */
+}
+
+div.highlighter-rouge:before {
+  font-size: 0.75em !important;
+}
+
+/* -------- Mermaid -------- */
+.mermaid {
+  text-align: center;
+  margin: 1.5em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: var(--bg-code, #f7f2ec);
+  border-radius: 8px;
+  padding: 1em;
+}
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+.mermaid-zoomed {
+  position: fixed;
+  z-index: 9999;
+  top: 5%;
+  left: 5%;
+  width: 90vw;
+  height: 90vh;
+  overflow: auto;
+  background: var(--bg-surface, #fffcf8);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  border-radius: 12px;
+  padding: 2em;
+  cursor: zoom-out;
+}
+.mermaid-zoomed svg {
+  max-width: none;
+  width: auto;
+  height: auto;
+}
+
 [data-theme="dark"] img {
   opacity: 0.85;
   transition: opacity 0.3s ease;
