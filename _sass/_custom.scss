@@ -74,14 +74,25 @@ $border-radius          : 8px;
   --rgb-heading: 232, 224, 216;
 }
 
+/* -------- Base Font Size -------- */
+/* 基础字号 16px → 17px（宽屏 18px → 19px），正文整体放大 */
+html {
+  font-size: 17px;
+}
+@media (min-width: 48em) {
+  html {
+    font-size: 19px;
+  }
+}
+
 /* -------- Code Font Size -------- */
 /* 代码块字体调大，默认 11px 太小 */
 .highlight {
-  font-size: 0.875em !important;  /* ~14px */
+  font-size: 0.9em !important;  /* ~15px */
 }
 
 code {
-  font-size: 0.8125em;  /* ~13px */
+  font-size: 0.85em;  /* ~14px */
 }
 
 div.highlighter-rouge:before {
@@ -138,6 +149,17 @@ html {
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
+}
+
+/* -------- Article Width -------- */
+/* Widen article: remove the right-column gutter reserved for a right
+   sidebar that this site doesn't use (right-sidebar-width is 0px). */
+.page {
+  @include breakpoint($large) {
+    @include span(10 of 12 last);
+    @include prefix(0.5 of 12);
+    @include suffix(0.5 of 12);
+  }
 }
 
 /* -------- Typography Tweaks -------- */
